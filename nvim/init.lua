@@ -33,6 +33,14 @@ require('lazy').setup({
   -- colours
   { 'ayu-theme/ayu-vim', name = 'ayu' },
 
+  -- leap
+  {
+    'ggandor/leap.nvim',
+    config = function()
+      require('leap').add_default_mappings()
+    end,
+  },
+
   -- LaTeX
   {
     'lervag/vimtex',
@@ -44,7 +52,6 @@ require('lazy').setup({
       vim.g.vimtex_quickfix_mode      = 0
       vim.g.vimtex_fold_enabled       = 1
       vim.g.vimtex_matchparen_enabled = 0
-      vim.g.vimtex_syntax_conceal     = { math_bounds = 0 }
       vim.g.vimtex_compiler_latexmk   = {
         aux_dir   = 'aux',
         out_dir   = '',
@@ -61,14 +68,6 @@ require('lazy').setup({
   'KeitaNakamura/tex-conceal.vim',
 
   -- snippets
-  -- {
-  --   'sirver/ultisnips',
-  --   init = function()
-  --     vim.g.UltiSnipsExpandTrigger       = '<tab>'
-  --     vim.g.UltiSnipsJumpForwardTrigger  = '<tab>'
-  --     vim.g.UltiSnipsJumpBackwardTrigger = '<s-tab>'
-  --   end,
-  -- },
   {
     "L3MON4D3/LuaSnip",
     version = "v2.*",
@@ -125,6 +124,7 @@ o.fileencoding   = 'utf-8'
 o.relativenumber = true
 o.number         = true
 o.colorcolumn    = '80'
+o.spell = true
 
 local cache = vim.fn.stdpath('state')
 o.directory = cache .. '/swap//'
@@ -187,6 +187,23 @@ vim.cmd('colorscheme ayu')
 vim.api.nvim_set_hl(0,'Conceal',{ link = 'Normal' })
 vim.api.nvim_set_hl(0,'SpellBad',{ underline = true })
 vim.api.nvim_set_hl(0,'Normal',{ fg = '#111111' })
+
+vim.opt.conceallevel = 2
+-- vim.opt.concealcursor = "n"
+vim.g.vimtex_syntax_conceal = {
+  accents = 1,
+  ligatures = 1,
+  cites = 1,
+  fancy = 1,
+  greek = 1,
+  math_bounds = 0,
+  math_delimiters = 1,
+  math_fracs = 1,
+  math_super_sub = 1,
+  symbols = 1,
+}
+
+
 
 -- 6. Minimap defaults
 vim.g.minimap_width               = 10

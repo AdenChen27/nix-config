@@ -66,7 +66,7 @@ M.text_abbr = {
 
 -- Text mode formatting (word triggers)
 M.text_format = {
-    s({ trig = "tt", wordTrig = true }, fmt("\\text{{{}}} ", { i(1) })),
+    s({ trig = "tt", }, fmt("\\text{{{}}} ", { i(1) })),
     s({ trig = "ttt", wordTrig = true }, fmt("\\texttt{{{}}} ", { i(1) })),
     s({ trig = "tit", wordTrig = true }, fmt("\\textit{{{}}} ", { i(1) })),
     s({ trig = "tbf", wordTrig = true }, fmt("\\textbf{{{}}} ", { i(1) })),
@@ -150,8 +150,8 @@ M.math = {
     autosnippet({ trig = "bar", wordTrig = true, condition = in_math }, fmt("\\overline{{{}}}", { i(1) })),
     autosnippet({ trig = "tilde", wordTrig = true, condition = in_math }, fmt("\\tilde{{{}}}", { i(1) })),
     autosnippet({ trig = "hat", wordTrig = true, condition = in_math }, fmt("\\hat{{{}}}", { i(1) })),
-    autosnippet({ trig = "dot", wordTrig = true, condition = in_math }, fmt("\\dot{{{}}}", { i(1) })),
-    autosnippet({ trig = "ddot", wordTrig = true, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
+    s({ trig = "dot", wordTrig = true, condition = in_math }, fmt("\\dot{{{}}}", { i(1) })),
+    s({ trig = "ddot", wordTrig = true, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
     autosnippet({ trig = "vec", wordTrig = true, condition = in_math }, fmt("\\vec{{{}}}", { i(1) })),
 
     s({
@@ -167,14 +167,14 @@ M.math = {
     in_math_postfix_snippet("bar",   "(%S+)bar",   "\\overline{%s}"),
     in_math_postfix_snippet("tilde", "(%S+)tilde", "\\tilde{%s}"),
     in_math_postfix_snippet("widehat",   "(%S+)hat",   "\\widehat{%s}"),
-    in_math_postfix_snippet("dot",   "(%S+)dot",   "\\dot{%s}"),
+    -- in_math_postfix_snippet("dot",   "(%S+)dot",   "\\dot{%s}"),
     in_math_postfix_snippet("ddot",  "(%S+)ddot",  "\\ddot{%s}"),
     in_math_postfix_snippet("vec",   "(%S+),%.",    "\\vec{%s}"),
     in_math_postfix_snippet("vec",   "(%S+)%.,",    "\\vec{%s}"),
 
     -- Subscripts and superscripts
     autosnippet({
-      trig = "([^%s%d])(%d+)",  -- match non-whitespace, non-digit followed by digits
+      trig = "([^%s%d%{%(%[%._])(%d+)",
       regTrig = true,
       wordTrig = false,
       name = "auto-subscript",
@@ -224,6 +224,9 @@ M.math = {
     ),
 
     -- Fractions
+    autosnippet({ trig = "//", }, {
+      t("\\frac{"), i(1), t("}{"), i(2), t("}"), i(0),
+    }),
     autosnippet({
       trig = "([^%s%{%}]+)/",
       regTrig = true,
