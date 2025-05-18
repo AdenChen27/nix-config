@@ -113,7 +113,9 @@ M.math = {
     -- Common math snippets with math context
     autosnippet({ trig = "neq", dscr = "not equals", wordTrig = true, regTrig = false, condition = in_math }, t("\\neq ")),
     autosnippet({ trig = "equiv", dscr = "equivalent", wordTrig = true, condition = in_math }, t("\\equiv ")),
-    autosnippet({ trig = ":=", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\coloneqq ")),
+    autosnippet({ trig = "in", wordTrig = true, condition = in_math }, t("\\in")),
+    autosnippet({ trig = ":=", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\coloneqq")),
+    autosnippet({ trig = "=:", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\eqqcolon")),
     s({ trig = "ceil", wordTrig = true, condition = in_math }, fmt("\\left\\lceil {} \\right\\rceil ", { i(1) })),
     s({ trig = "floor", wordTrig = true, condition = in_math }, fmt("\\left\\lfloor {} \\right\\rfloor ", { i(1) })),
 
