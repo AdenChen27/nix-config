@@ -23,6 +23,7 @@ in {
     texlive.combined.scheme-full
     openssh
     nodejs_22
+    tmux
 
     # Programming Languages
     python311
@@ -49,5 +50,11 @@ in {
       ln -snf "/Users/aden/Library/CloudStorage/Box-Box/Econ" "$HOME/Econ"
     '';
   };
+
+  # Scripts in ~/bin
+  home.sessionPath = [ "$HOME/bin" ];
+
+  home.file."bin".source = ./bin;
+  home.file."bin".recursive = true;
 }
 

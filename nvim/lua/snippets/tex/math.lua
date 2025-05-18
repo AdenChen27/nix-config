@@ -16,6 +16,7 @@ local not_in_math = function(...) return not in_math(...) end
 
 local autosnippet = ls.extend_decorator.apply(s, { snippetType = "autosnippet" })
 
+
 local M = {}
 
 -- Sections (normal snippets)
@@ -26,6 +27,30 @@ M.sections = {
     autosnippet("subsec*", fmt("\\subsection*{{{}}}", { i(1) })),
     s("subsubsec", fmt("\\subsubsection{{{}}}", { i(1) })),
     autosnippet("subsubsec*", fmt("\\subsubsection*{{{}}}", { i(1) })),
+
+    s("thm", fmt("\\begin{{theorem}}{}\n\\end{{theorem}}", { i(1) })),
+    autosnippet("thm*", fmt("\\begin{{theorem*}}{}\n\\end{{theorem*}}", { i(1) })),
+    s("lem", fmt("\\begin{{lemma}}{}\n\\end{{lemma}}", { i(1) })),
+    autosnippet("lem*", fmt("\\begin{{lemma*}}{}\n\\end{{lemma*}}", { i(1) })),
+    s("cor", fmt("\\begin{{corollary}}{}\n\\end{{corollary}}", { i(1) })),
+    autosnippet("cor*", fmt("\\begin{{corollary*}}{}\n\\end{{corollary*}}", { i(1) })),
+    s("def", fmt("\\begin{{definition}}{}\n\\end{{definition}}", { i(1) })),
+    autosnippet("def*", fmt("\\begin{{definition*}}{}\n\\end{{definition*}}", { i(1) })),
+    s("prop", fmt("\\begin{{proposition}}{}\n\\end{{proposition}}", { i(1) })),
+    autosnippet("prop*", fmt("\\begin{{proposition*}}{}\n\\end{{proposition*}}", { i(1) })),
+    s("rem", fmt("\\begin{{remark}}{}\n\\end{{remark}}", { i(1) })),
+    autosnippet("rem*", fmt("\\begin{{remark*}}{}\n\\end{{remark*}}", { i(1) })),
+    s("proof", fmt("\\begin{{proof}}{}\n\\end{{proof}}", { i(1) })),
+    s("example", fmt("\\begin{{example}}{}\n\\end{{example}}", { i(1) })),
+    autosnippet("example*", fmt("\\begin{{example*}}{}\n\\end{{example*}}", { i(1) })),
+    s("problem", fmt("\\begin{{problem}}{}\n\\end{{problem}}", { i(1) })),
+    autosnippet("problem*", fmt("\\begin{{problem*}}{}\n\\end{{problem*}}", { i(1) })),
+    s("eqn", fmt("\\begin{{equation}}{}\n\\end{{equation}}", { i(1) })),
+    autosnippet("eqn*", fmt("\\begin{{equation*}}{}\n\\end{{equation*}}", { i(1) })),
+    s("align", fmt("\\begin{{align}}{}\n\\end{{align}}", { i(1) })),
+    autosnippet("align*", fmt("\\begin{{align*}}{}\n\\end{{align*}}", { i(1) })),
+    s("beg", fmt("\\begin{{{}}}{}\n\\end{{{}}}", { i(1), i(2), rep(1) })),
+
 }
 
 -- Text abbreviations (plain snippets)
@@ -45,7 +70,14 @@ M.text_format = {
     s({ trig = "ttt", wordTrig = true }, fmt("\\texttt{{{}}} ", { i(1) })),
     s({ trig = "tit", wordTrig = true }, fmt("\\textit{{{}}} ", { i(1) })),
     s({ trig = "tbf", wordTrig = true }, fmt("\\textbf{{{}}} ", { i(1) })),
-    autosnippet({ trig = "^^", wordTrig = false }, fmt("\\textsuperscript{{{}}}", { i(1) })),
+    autosnippet(
+      {
+        trig = "^^",
+        wordTrig = false,
+        condition = not_in_math,
+      },
+      fmt("\\textsuperscript{{{}}}", { i(1) })
+    ),
 }
 
 -- Math mode snippets and autosnippets
@@ -139,6 +171,137 @@ M.math = {
     in_math_postfix_snippet("ddot",  "(%S+)ddot",  "\\ddot{%s}"),
     in_math_postfix_snippet("vec",   "(%S+),%.",    "\\vec{%s}"),
     in_math_postfix_snippet("vec",   "(%S+)%.,",    "\\vec{%s}"),
+
+    -- Subscripts and superscripts
+    autosnippet({
+      trig = "([^%s%d])(%d+)",  -- match non-whitespace, non-digit followed by digits
+      regTrig = true,
+      wordTrig = false,
+      name = "auto-subscript",
+      condition = require("luasnip.extras.expand_conditions").in_mathzone,
+    }, d(1, function(_, snip)
+      local base = snip.captures[1]
+      local sub  = snip.captures[2]
+      return sn(nil, {
+        f(function() return base .. "_" end),
+        t(sub),
+      })
+    end)),
+    -- Subscript: `__` → _{...}
+    autosnippet(
+      {
+        trig = "__",
+        wordTrig = false,
+        condition = in_math,
+      },
+      fmt("_{{{}}}", {
+        d(1, function(_, parent)
+          if #parent.snippet.env.SELECT_RAW > 0 then
+            return sn(nil, t(parent.snippet.env.SELECT_RAW))
+          else
+            return sn(nil, i(1))
+          end
+        end),
+      })
+    ),
+
+    -- Superscript: `^^` → ^{...}
+    autosnippet(
+      {
+        trig = "^^",
+        wordTrig = false,
+        condition = in_math,
+      },
+      fmt("^{{{}}}", {
+        d(1, function(_, parent)
+          if #parent.snippet.env.SELECT_RAW > 0 then
+            return sn(nil, t(parent.snippet.env.SELECT_RAW))
+          else
+            return sn(nil, i(1))
+          end
+        end),
+      })
+    ),
+
+    -- Fractions
+    autosnippet({
+      trig = "([^%s%{%}]+)/",
+      regTrig = true,
+      wordTrig = false,
+      name = "frac",
+    }, d(1, function(_, snip)
+      local num = snip.captures[1]
+      return sn(nil, {
+        f(function() return "\\frac{" .. num .. "}{" end),
+        i(1),
+        t("}"),
+      })
+    end)),
+
+    -- Delimiters
+    s(
+      { trig = "%(%)", wordTrig = false, regTrig = true, condition = in_math },
+      fmt("\\left( {} \\right)", { i(1) })
+    ),
+    s(
+      { trig = "%[%]", wordTrig = false, regTrig = true, condition = in_math },
+      fmt("\\left[ {} \\right]", { i(1) })
+    ),
+    s(
+      { trig = "%{%}", wordTrig = false, regTrig = true, condition = in_math },
+      fmt("\\left\\{{{} \\right\\}}", { i(1) })
+    ),
+    s(
+      { trig = "<>", wordTrig = false, regTrig = true, condition = in_math },
+      fmt("\\left< {} \\right>", { i(1) })
+    ),
+
+    -- 
+    autosnippet(
+      { trig = "!>", wordTrig = false, condition = in_math, },
+      t("\\mapsto ")
+    ),
+    autosnippet(
+      { trig = ">>", wordTrig = false, condition = in_math, },
+      t("\\gg")
+    ),
+    autosnippet(
+      { trig = "<<", wordTrig = false, condition = in_math, },
+      t("\\ll")
+    ),
+    -- derivatives etc
+    autosnippet(
+      { trig = "deri", wordTrig = true, condition = in_math, },
+      fmt("\\frac{{\\d {}}}{{\\d {}}}", { i(1, "V"), i(2, "x") })),
+    s({ trig = "part",   wordTrig = true, condition = in_math },
+      fmt("\\frac{{\\partial {}}}{{\\partial {}}}", { i(1, "V"), i(2, "x") })),
+
+    s({ trig = "ipart",  wordTrig = true, condition = in_math },
+      fmt("{{\\partial {}}} / {{\\partial {}}}",     { i(1, "V"), i(2, "x") })),
+
+    s({ trig = "partk",  wordTrig = true, condition = in_math },
+      fmt("\\frac{{\\partial^{{{}}} {}}}{{\\partial {}^{{{}}}}}",
+      { i(1, "k"), i(2, "V"), i(3, "x"), rep(1) })),
+
+    s({ trig = "ipartk", wordTrig = true, condition = in_math },
+      fmt("{{\\partial^{{{}}} {}}} / {{\\partial {}^{{{}}}}}",
+      { i(1, "k"), i(2, "V"), i(3, "x"), rep(1) })),
+    -- bigfun
+    autosnippet({
+      trig = "bigfun",
+      wordTrig = true,
+      condition = in_math,
+    }, fmt([[
+    \begin{{align*}}
+      {}: {} &\longrightarrow {} \\\\
+           {} &\longmapsto {}
+    \end{{align*}}
+    ]], {
+      i(1), i(2), i(3), i(4), i(5),
+    })),
+
+
+    
 }
 
 -- Export all snippets combined

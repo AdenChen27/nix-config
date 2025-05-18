@@ -135,10 +135,10 @@ o.undofile  = true
 o.backspace   = { 'indent', 'eol', 'start' }
 o.autoindent  = true
 o.cindent     = true
-o.shiftwidth  = 4
+o.shiftwidth  = 2
 o.smarttab    = true
 o.expandtab   = true
-o.tabstop     = 8
+o.tabstop     = 2
 o.softtabstop = 0
 
 o.foldmethod = 'indent'
@@ -170,14 +170,16 @@ cmd('BufWinEnter', {
   command = 'silent! loadview',
 })
 
-cmd({ 'BufNewFile','BufRead' }, {
-  pattern = { '*.js','*.html','*.css' },
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("CustomTabSettings", { clear = true }),
+  pattern = { "python", "c", "cpp" },
   callback = function()
-    vim.opt_local.shiftwidth  = 2
-    vim.opt_local.softtabstop = 2
-    vim.opt_local.tabstop     = 2
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
   end,
 })
+
 
 -- 5. Colours & Conceal
 vim.opt.background = 'light'
