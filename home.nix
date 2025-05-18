@@ -2,6 +2,8 @@
 let
   env = import ./env.nix;
 in {
+  programs.home-manager.enable = true;
+  programs.zsh.enable = true;
   home.sessionVariables = env;
 
   home.username = "aden";
@@ -18,7 +20,7 @@ in {
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     neovim
     code-minimap
-    texlive.combined.scheme-medium
+    texlive.combined.scheme-full
     openssh
     nodejs_22
 
