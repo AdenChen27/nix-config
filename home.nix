@@ -1,9 +1,23 @@
 { config, pkgs, lib, ... }:
 let
   env = import ./env.nix;
+  rWithPackages = pkgs.rWrapper.override {
+    packages = with pkgs.rPackages; [
+      estimatr
+      tidyverse
+      modelsummary
+      fixest
+      broom
+      sandwich
+      data_table
+      readxl
+      haven
+      knitr
+    ];
+  };
 in {
   programs.home-manager.enable = true;
-  programs.zsh.enable = true;
+  # programs.zsh.enable = true;
   home.sessionVariables = env;
 
   home.username = "aden";
@@ -17,17 +31,19 @@ in {
     fd
     bat
     fzf
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    pkgs.nerd-fonts.jetbrains-mono
     neovim
     code-minimap
     texlive.combined.scheme-full
     openssh
     nodejs_22
     tmux
+    coreutils
+    starship
 
-    # Programming Languages
-    python311
-    python311Packages.pip
+    rWithPackages
+    python312
+    python312Packages.pip
   ];
 
   programs.git.enable = true;
@@ -51,10 +67,17 @@ in {
     '';
   };
 
+  # Path
+  home.sessionPath = [
+    "${config.home.homeDirectory}/bin"
+    "${pkgs.coreutils}/bin"
+  ];
   # Scripts in ~/bin
-  home.sessionPath = [ "$HOME/bin" ];
-
   home.file."bin".source = ./bin;
   home.file."bin".recursive = true;
+
+  # direnv
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
 }
 

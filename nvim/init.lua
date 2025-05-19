@@ -32,6 +32,8 @@ require('lazy').setup({
 
   -- colours
   { 'ayu-theme/ayu-vim', name = 'ayu' },
+  { "catppuccin/nvim", name = "catppuccin", },
+  { 'projekt0n/github-nvim-theme', name = 'github-theme' },
 
   -- leap
   {
@@ -90,14 +92,31 @@ require('lazy').setup({
   },
 
   -- AI
-  {
-    "robitx/gp.nvim",
-    config = function()
-        local conf = {
-        }
-        require("gp").setup(conf)
-    end,
-  },
+  -- {
+  --   "robitx/gp.nvim",
+  --   lazy = false,
+  --   config = function()
+  --     require("gp").setup({
+  --       openai_api_key = os.getenv("OPENAI_API_KEY"),
+  --       agents = {
+  --         {
+  --           name = "ChatGPT-4",
+  --           chat = true,
+  --           command = false,
+  --           model = "gpt-4",
+  --           system_prompt = "You are a helpful assistant.",
+  --         },
+  --         {
+  --           name = "CodeGPT",
+  --           chat = false,
+  --           command = true,
+  --           model = "gpt-4",
+  --           system_prompt = "You are a code assistant.",
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
   {
       "github/copilot.vim",
       lazy = false,
@@ -194,7 +213,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- 5. Colours & Conceal
 vim.opt.background = 'light'
-vim.cmd('colorscheme ayu')
+vim.cmd('colorscheme catppuccin-latte')
 vim.api.nvim_set_hl(0,'Conceal',{ link = 'Normal' })
 vim.api.nvim_set_hl(0,'SpellBad',{ underline = true })
 vim.api.nvim_set_hl(0,'Normal',{ fg = '#111111' })

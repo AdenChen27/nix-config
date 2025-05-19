@@ -13,22 +13,25 @@
       csil = "ssh adenc@linux.cs.uchicago.edu";
 
       # ls + vim
-      ls = "ls -G --color=auto";
-      ll = "ls -lGrth --color=auto";
+      ls = "ls -G --color=auto --group-directories-first";
+      ll = "ls -lGrth --color=auto --group-directories-first";
       vim = "nvim";
       vi = "nvim";
       v = "nvim";
 
       # Darwin rebuild
-      drs = "darwin-rebuild switch --flake ~/nix-config#\"Aden's Brain\"";
+      drs = "sudo darwin-rebuild switch --flake ~/nix-config#\"Aden's Brain\"";
     };
 
-    initExtra = ''
+    initContent = ''
       # Run ll on directory change
-      function chpwd() {
-        emulate -L zsh
-	ls -lGrth --color=auto
-      }
+      # function chpwd() {
+      #   emulate -L zsh
+      #   ls -lGrth --color=auto --group-directories-first
+      # }
+
+      eval "$(direnv hook zsh)"
+      eval "$(starship init zsh)"
     '';
   };
 }

@@ -66,10 +66,10 @@ M.text_abbr = {
 
 -- Text mode formatting (word triggers)
 M.text_format = {
-    s({ trig = "tt", }, fmt("\\text{{{}}} ", { i(1) })),
-    s({ trig = "ttt", wordTrig = true }, fmt("\\texttt{{{}}} ", { i(1) })),
-    s({ trig = "tit", wordTrig = true }, fmt("\\textit{{{}}} ", { i(1) })),
-    s({ trig = "tbf", wordTrig = true }, fmt("\\textbf{{{}}} ", { i(1) })),
+    s({ trig = "tt", wordTrig = false, }, fmt("\\text{{{}}} ", { i(1)})),
+    s({ trig = "ttt", wordTrig = true }, fmt("\\texttt{{{}}} ", { i(1)})),
+    s({ trig = "tit", wordTrig = true }, fmt("\\textit{{{}}} ", { i(1)})),
+    s({ trig = "tbf", wordTrig = true }, fmt("\\textbf{{{}}} ", { i(1)})),
     autosnippet(
       {
         trig = "^^",
@@ -107,8 +107,7 @@ M.math = {
     autosnippet({ trig = "dm", name = "display math" }, fmta([[
     \[
       <>
-    \]
-    <>]], { i(1), i(0) }), { condition = conds.line_begin, show_condition = tex.show_line_begin }),
+    \]<>]], { i(1), i(0) }), { condition = conds.line_begin, show_condition = tex.show_line_begin }),
 
     -- Common math snippets with math context
     autosnippet({ trig = "neq", dscr = "not equals", wordTrig = true, regTrig = false, condition = in_math }, t("\\neq ")),
