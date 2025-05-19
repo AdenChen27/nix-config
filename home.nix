@@ -1,23 +1,22 @@
 { config, pkgs, lib, ... }:
 let
   env = import ./env.nix;
-  rWithPackages = pkgs.rWrapper.override {
-    packages = with pkgs.rPackages; [
-      estimatr
-      tidyverse
-      modelsummary
-      fixest
-      broom
-      sandwich
-      data_table
-      readxl
-      haven
-      knitr
-    ];
-  };
+  # rWithPackages = pkgs.rWrapper.override {
+  #   packages = with pkgs.rPackages; [
+  #     estimatr
+  #     tidyverse
+  #     modelsummary
+  #     fixest
+  #     broom
+  #     sandwich
+  #     data_table
+  #     readxl
+  #     haven
+  #     knitr
+  #   ];
+  # };
 in {
   programs.home-manager.enable = true;
-  # programs.zsh.enable = true;
   home.sessionVariables = env;
 
   home.username = "aden";
@@ -41,7 +40,7 @@ in {
     coreutils
     starship
 
-    rWithPackages
+    # rWithPackages
     python312
     python312Packages.pip
   ];
