@@ -31,10 +31,12 @@ require("lazy").setup({
 	"ap/vim-css-color",
 	"psliwka/vim-smoothie",
 
-	-- colours
+	-- Colorschemes
 	{ "ayu-theme/ayu-vim", name = "ayu" },
 	{ "catppuccin/nvim", name = "catppuccin" },
 	{ "projekt0n/github-nvim-theme", name = "github-theme" },
+	{ "EdenEast/nightfox.nvim" },
+	{ "marko-cerovac/material.nvim" },
 
 	-- leap
 	{
@@ -184,7 +186,6 @@ for _, key in ipairs({ "h", "j", "k", "l" }) do
 	vim.keymap.set("n", "<C-" .. key:upper() .. ">", "<C-w><C-" .. key:upper() .. ">", { silent = true })
 end
 vim.keymap.set("n", "<leader>/", ":Commentary<CR>j")
-
 
 -- 4. Autocommands
 local aug = vim.api.nvim_create_augroup

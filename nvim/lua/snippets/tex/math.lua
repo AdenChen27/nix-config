@@ -170,8 +170,6 @@ M.math = {
 	autosnippet({ trig = "bar", wordTrig = true, condition = in_math }, fmt("\\overline{{{}}}", { i(1) })),
 	autosnippet({ trig = "tilde", wordTrig = true, condition = in_math }, fmt("\\tilde{{{}}}", { i(1) })),
 	autosnippet({ trig = "hat", wordTrig = true, condition = in_math }, fmt("\\hat{{{}}}", { i(1) })),
-	s({ trig = "dot", wordTrig = true, condition = in_math }, fmt("\\dot{{{}}}", { i(1) })),
-	s({ trig = "ddot", wordTrig = true, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
 	autosnippet({ trig = "vec", wordTrig = true, condition = in_math }, fmt("\\vec{{{}}}", { i(1) })),
 
 	-- s(
@@ -189,6 +187,8 @@ M.math = {
 	-- ),
 	-- in_math_postfix_snippet("bar",   "(%S+)bar",   "\\overline{%s}"),
 	-- in_math_postfix_snippet("tilde", "(%S+)tilde", "\\tilde{%s}"),
+	s({ trig = "dot", wordTrig = false, condition = in_math }, fmt("\\dot{{{}}}", { i(1) })),
+	s({ trig = "ddot", wordTrig = false, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
 	in_math_postfix_snippet("widehat", "(%w)hat", "\\hat{%s}"),
 	-- in_math_postfix_snippet("ddot",  "(%S+)ddot",  "\\ddot{%s}"),
 	-- in_math_postfix_snippet("vec",   "(%S+),%.",    "\\vec{%s}"),
