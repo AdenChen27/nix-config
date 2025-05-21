@@ -57,13 +57,13 @@ M.sections = {
 
 -- Text abbreviations (plain snippets)
 M.text_abbr = {
-	s("cont", t("continuous ")),
-	s("iff", t("if and only if ")),
-	s("nhbd", t("neighborhood ")),
-	s("nhbds", t("neighborhoods ")),
-	s("st", t("such that ")),
-	s("fe", t("for every ")),
-	s("ae", t("almost everywhere ")),
+	s("cont", t("continuous")),
+	s("iff", t("if and only if")),
+	s("nhbd", t("neighborhood")),
+	s("nhbds", t("neighborhoods")),
+	s("st", t("such that")),
+	s("fe", t("for every")),
+	s("ae", t("almost everywhere")),
 }
 
 -- Text mode formatting (word triggers)
@@ -124,13 +124,13 @@ M.math = {
 	),
 	autosnippet({ trig = "equiv", dscr = "equivalent", wordTrig = true, condition = in_math }, t("\\equiv ")),
 	-- autosnippet({ trig = "in", wordTrig = true, condition = in_math }, t("\\in")),
-	autosnippet({ trig = "(%s)in", regTrig = true, condition = in_math }, {
+	autosnippet({ trig = "(%s)in", wordTrig = false, regTrig = true, condition = in_math }, {
 		f(function(_, snip)
 			return snip.captures[1] .. "\\in"
 		end),
 	}),
 
-	autosnippet({ trig = ":=", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\coloneqq")),
+	autosnippet({ trig = "!=", dscr = "not equal", wordTrig = true, condition = in_math }, t("\\neq ")),
 	autosnippet({ trig = "=:", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\eqqcolon")),
 	s({ trig = "ceil", wordTrig = true, condition = in_math }, fmt("\\left\\lceil {} \\right\\rceil ", { i(1) })),
 	s({ trig = "floor", wordTrig = true, condition = in_math }, fmt("\\left\\lfloor {} \\right\\rfloor ", { i(1) })),
@@ -160,11 +160,13 @@ M.math = {
 	s({ trig = "oxx", wordTrig = true, condition = in_math }, t("\\otimes ")),
 	s({ trig = "~~", wordTrig = true, condition = in_math }, t("\\sim ")),
 	s({ trig = "oo", wordTrig = true, condition = in_math }, t("\\infty")),
-	s({ trig = "...", wordTrig = true, condition = in_math }, t("\\dots ")),
+	autosnippet({ trig = "...", wordTrig = true, condition = in_math }, t("\\dots ")),
 	s({ trig = "||", wordTrig = true, condition = in_math }, fmt("\\abs{{{}}}", { i(1) })),
-	s({ trig = "|||", wordTrig = true, condition = in_math }, fmt("\\norm{{{}}}", { i(1) })),
+	autosnippet({ trig = "|||", wordTrig = true, condition = in_math }, fmt("\\norm{{{}}}", { i(1) })),
 
 	-- Functions and postfix forms (some with postfix helper)
+	s({ trig = "abs", wordTrig = true, condition = in_math }, fmt("\\abs{{{}}}", { i(1) })),
+	s({ trig = "norm", wordTrig = true, condition = in_math }, fmt("\\norm{{{}}}", { i(1) })),
 	autosnippet({ trig = "bar", wordTrig = true, condition = in_math }, fmt("\\overline{{{}}}", { i(1) })),
 	autosnippet({ trig = "tilde", wordTrig = true, condition = in_math }, fmt("\\tilde{{{}}}", { i(1) })),
 	autosnippet({ trig = "hat", wordTrig = true, condition = in_math }, fmt("\\hat{{{}}}", { i(1) })),
@@ -187,7 +189,7 @@ M.math = {
 	-- ),
 	-- in_math_postfix_snippet("bar",   "(%S+)bar",   "\\overline{%s}"),
 	-- in_math_postfix_snippet("tilde", "(%S+)tilde", "\\tilde{%s}"),
-	in_math_postfix_snippet("widehat",   "(%w)hat",   "\\hat{%s}"),
+	in_math_postfix_snippet("widehat", "(%w)hat", "\\hat{%s}"),
 	-- in_math_postfix_snippet("ddot",  "(%S+)ddot",  "\\ddot{%s}"),
 	-- in_math_postfix_snippet("vec",   "(%S+),%.",    "\\vec{%s}"),
 	-- in_math_postfix_snippet("vec",   "(%S+)%.,",    "\\vec{%s}"),
