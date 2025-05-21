@@ -184,8 +184,7 @@ for _, key in ipairs({ "h", "j", "k", "l" }) do
 	vim.keymap.set("n", "<C-" .. key:upper() .. ">", "<C-w><C-" .. key:upper() .. ">", { silent = true })
 end
 vim.keymap.set("n", "<leader>/", ":Commentary<CR>j")
-vim.keymap.set("i", "<leader>/", "<Esc>:Commentary<CR>ji")
-vim.keymap.set("v", "<leader>/", "gc")
+
 
 -- 4. Autocommands
 local aug = vim.api.nvim_create_augroup

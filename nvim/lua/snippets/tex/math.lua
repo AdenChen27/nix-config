@@ -172,22 +172,22 @@ M.math = {
 	s({ trig = "ddot", wordTrig = true, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
 	autosnippet({ trig = "vec", wordTrig = true, condition = in_math }, fmt("\\vec{{{}}}", { i(1) })),
 
-	s(
-		{
-			trig = "(%s%a)hat",
-			regTrig = true,
-			wordTrig = false,
-			snippetType = "autosnippet",
-			name = "hat",
-			condition = in_math,
-		},
-		f(function(_, snip)
-			return string.format(" \\hat{%s}", snip.captures[1]:gsub("^%s+", ""))
-		end, {})
-	),
+	-- s(
+	-- 	{
+	-- 		trig = "(%s%a)hat",
+	-- 		regTrig = true,
+	-- 		wordTrig = false,
+	-- 		snippetType = "autosnippet",
+	-- 		name = "hat",
+	-- 		condition = in_math,
+	-- 	},
+	-- 	f(function(_, snip)
+	-- 		return string.format(" \\hat{%s}", snip.captures[1]:gsub("^%s+", ""))
+	-- 	end, {})
+	-- ),
 	-- in_math_postfix_snippet("bar",   "(%S+)bar",   "\\overline{%s}"),
 	-- in_math_postfix_snippet("tilde", "(%S+)tilde", "\\tilde{%s}"),
-	-- in_math_postfix_snippet("widehat",   "(%S+)hat",   "\\widehat{%s}"),
+	in_math_postfix_snippet("widehat",   "(%w)hat",   "\\hat{%s}"),
 	-- in_math_postfix_snippet("ddot",  "(%S+)ddot",  "\\ddot{%s}"),
 	-- in_math_postfix_snippet("vec",   "(%S+),%.",    "\\vec{%s}"),
 	-- in_math_postfix_snippet("vec",   "(%S+)%.,",    "\\vec{%s}"),
