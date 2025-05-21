@@ -39,6 +39,7 @@ in {
     tmux
     coreutils
     starship
+    stylua
 
     # rWithPackages
     python312
