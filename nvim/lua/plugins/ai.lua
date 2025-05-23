@@ -27,10 +27,10 @@ return {
 	{
 		"github/copilot.vim",
 		lazy = false,
+    init = function()
+      vim.g.copilot_no_tab_map = true
+    end,
 		config = function()
-			-- Disable Copilot's default <Tab> mapping
-			vim.g.copilot_no_tab_map = true
-
 			-- Use <C-J> to accept Copilot suggestions
 			vim.cmd([[
           imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
@@ -41,7 +41,11 @@ return {
 				pattern = "*",
 				callback = function()
 					local buf_path = vim.fn.expand("%:p")
-					if string.find(string.lower(buf_path), "/courses/") then
+					local buf_name = vim.fn.expand("%:t")
+					if
+						string.find(string.lower(buf_path), "/courses/")
+						and not string.find(string.lower(buf_name), "notes")
+					then
 						vim.cmd("Copilot disable")
 					else
 						vim.cmd("Copilot enable")
@@ -51,5 +55,3 @@ return {
 		end,
 	},
 }
-
-
