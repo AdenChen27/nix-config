@@ -25,6 +25,10 @@ in {
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
+    nodejs
+    pyright
+    tree
+    tree-sitter
     starship
     zoxide
     fd

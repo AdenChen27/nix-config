@@ -1,0 +1,21 @@
+local function relink(group, target)
+  vim.api.nvim_set_hl(0, group, { link = target })
+end
+
+relink("texCmd", "Function")
+relink("texCmdEnv", "Function")
+relink("texCmdPart", "Function")
+relink("texDefCmd", "Function")
+relink("texArg", "Identifier")
+relink("texOpt", "Identifier")
+relink("texMathZoneX", "String")
+relink("texMathZoneY", "String")
+relink("texMathSymbol", "Operator")
+relink("texEnvArgName", "Type")
+relink("texSection", "Keyword")
+relink("texComment", "Comment")
+relink("texRefZone", "Underlined")
+relink("texInputFile", "String")
+relink("texDelimiter", "Delimiter")
+relink("texTypeStyle", "Type")
+

@@ -131,7 +131,8 @@ M.math = {
 	}),
 
 	autosnippet({ trig = "!=", dscr = "not equal", wordTrig = true, condition = in_math }, t("\\neq ")),
-	autosnippet({ trig = "=:", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\eqqcolon")),
+  autosnippet({ trig = ":=", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\coloneqq")),
+	autosnippet({ trig = "=:", dscr = "eqqcolon", wordTrig = true, condition = in_math }, t("\\eqqcolon")),
 	s({ trig = "ceil", wordTrig = true, condition = in_math }, fmt("\\left\\lceil {} \\right\\rceil ", { i(1) })),
 	s({ trig = "floor", wordTrig = true, condition = in_math }, fmt("\\left\\lfloor {} \\right\\rfloor ", { i(1) })),
 
@@ -207,7 +208,8 @@ M.math = {
 			regTrig = true,
 			wordTrig = false,
 			name = "auto-subscript",
-			condition = require("luasnip.extras.expand_conditions").in_mathzone,
+			-- condition = require("luasnip.extras.expand_conditions").in_mathzone,
+			condition = in_math,
 		},
 		d(1, function(_, snip)
 			local base = snip.captures[1]
