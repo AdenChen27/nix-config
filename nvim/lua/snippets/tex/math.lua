@@ -53,6 +53,7 @@ M.sections = {
 	s("enum", fmt("\\begin{{enumerate}}[label=(\\roman*)]{}\n\\end{{enumerate}}", { i(1) })),
 	autosnippet("align*", fmt("\\begin{{align*}}{}\n\\end{{align*}}", { i(1) })),
 	s("beg", fmt("\\begin{{{}}}{}\n\\end{{{}}}", { i(1), i(2), rep(1) })),
+	s("case", fmt("\\begin{{cases}}[label=(\\roman*)]{}\n\\end{{cases}}", { i(1) })),
 }
 
 -- Text abbreviations (plain snippets)
@@ -142,7 +143,7 @@ M.math = {
 	s({ trig = "contra", wordTrig = true, condition = in_math }, t("\\contradiction ")), -- note: may need user macro
 
 	-- Set notation
-	autosnippet({ trig = "set", name = "set notation" }, fmta("\\{<>\\} <>", { i(1), i(0) }), { condition = in_math }),
+	autosnippet({ trig = "set", name = "set notation" }, fmta("\\{<>\\}<>", { i(1), i(0) }), { condition = in_math }),
 
 	-- Relations and set symbols
 	s({ trig = "\\", wordTrig = true, condition = in_math }, t("\\setminus ")),
@@ -159,7 +160,7 @@ M.math = {
 	s({ trig = "conj", wordTrig = true, condition = in_math }, fmt("\\overline{{{}}}", { i(1) })),
 	s({ trig = "xx", wordTrig = true, condition = in_math }, t("\\times ")),
 	s({ trig = "oxx", wordTrig = true, condition = in_math }, t("\\otimes ")),
-	s({ trig = "~~", wordTrig = true, condition = in_math }, t("\\sim ")),
+	autosnippet({ trig = "~~", wordTrig = true, condition = in_math }, t("\\sim ")),
 	s({ trig = "oo", wordTrig = true, condition = in_math }, t("\\infty")),
 	autosnippet({ trig = "...", wordTrig = true, condition = in_math }, t("\\dots ")),
 	s({ trig = "||", wordTrig = true, condition = in_math }, fmt("\\abs{{{}}}", { i(1) })),
