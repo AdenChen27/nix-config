@@ -49,6 +49,8 @@ M.sections = {
 	s("eqn", fmt("\\begin{{equation}}{}\n\\end{{equation}}", { i(1) })),
 	autosnippet("eqn*", fmt("\\begin{{equation*}}{}\n\\end{{equation*}}", { i(1) })),
 	s("align", fmt("\\begin{{align}}{}\n\\end{{align}}", { i(1) })),
+  s("gather", fmt("\\begin{{gather}}{}\n\\end{{gather}}", { i(1) })),
+  autosnippet("gather*", fmt("\\begin{{gather*}}{}\n\\end{{gather*}}", { i(1) })),
 	s("item", fmt("\\begin{{itemize}}{}\n\\end{{itemize}}", { i(1) })),
 	s("enum", fmt("\\begin{{enumerate}}[label=(\\roman*)]{}\n\\end{{enumerate}}", { i(1) })),
 	autosnippet("align*", fmt("\\begin{{align*}}{}\n\\end{{align*}}", { i(1) })),
@@ -73,6 +75,7 @@ M.text_format = {
 	s({ trig = "ttt", wordTrig = true }, fmt("\\texttt{{{}}}", { i(1) })),
 	s({ trig = "tit", wordTrig = true }, fmt("\\textit{{{}}}", { i(1) })),
 	s({ trig = "tbf", wordTrig = true }, fmt("\\textbf{{{}}}", { i(1) })),
+	s({ trig = "mrm", wordTrig = true }, fmt("\\mathrm{{{}}}", { i(1) })),
 	autosnippet({
 		trig = "^^",
 		wordTrig = false,
