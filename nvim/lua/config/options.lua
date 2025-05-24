@@ -10,6 +10,10 @@ o.termguicolors = true
 o.conceallevel = 2
 o.signcolumn = "yes"
 
+vim.api.nvim_set_hl(0, "Conceal", { link = "Normal" })
+vim.api.nvim_set_hl(0, "SpellBad", { underline = true })
+
+
 -- Colorschemes
 o.background = "light"
 vim.cmd("colorscheme catppuccin-latte")
@@ -45,4 +49,34 @@ o.directory  = cache .. "/swap//"
 o.backupdir  = cache .. "/backup//"
 o.undodir    = cache .. "/undo//"
 o.undofile   = true
+
+
+-- Autocommands
+
+local aug = vim.api.nvim_create_augroup
+local cmd = vim.api.nvim_create_autocmd
+
+-- Remember folds
+aug("remember_folds", { clear = true })
+cmd("BufWinLeave", {
+	group = "remember_folds",
+	pattern = "*",
+	command = "mkview",
+})
+cmd("BufWinEnter", {
+	group = "remember_folds",
+	pattern = "*",
+	command = "silent! loadview",
+})
+
+-- FileType-specific indentation
+cmd("FileType", {
+	group = aug("CustomTabSettings", { clear = true }),
+	pattern = { "python", "c", "cpp" },
+	callback = function()
+		vim.opt_local.tabstop = 4
+		vim.opt_local.shiftwidth = 4
+		vim.opt_local.expandtab = true
+	end,
+})
 

@@ -17,3 +17,8 @@ vim.api.nvim_create_autocmd("FileType", {
 		end, { buffer = true, desc = "Format Lua with stylua" })
 	end,
 })
+
+
+-- <C-l> to correct spelling in insert mode
+vim.keymap.set("i", "<C-l>", "<c-g>u<Esc>[s1z=`]a<c-g>u", { silent = true })
+
