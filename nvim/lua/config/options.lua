@@ -61,13 +61,22 @@ aug("remember_folds", { clear = true })
 cmd("BufWinLeave", {
 	group = "remember_folds",
 	pattern = "*",
-	command = "mkview",
+	callback = function()
+		if vim.api.nvim_buf_get_name(0) ~= "" and vim.bo.buftype == "" then
+			vim.cmd("mkview")
+		end
+	end,
 })
 cmd("BufWinEnter", {
 	group = "remember_folds",
 	pattern = "*",
-	command = "silent! loadview",
+	callback = function()
+		if vim.api.nvim_buf_get_name(0) ~= "" and vim.bo.buftype == "" then
+			vim.cmd("silent! loadview")
+		end
+	end,
 })
+
 
 -- FileType-specific indentation
 cmd("FileType", {
