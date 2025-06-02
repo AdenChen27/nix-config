@@ -26,6 +26,7 @@ o.hlsearch = false
 o.fileencoding = "utf-8"
 o.backspace = { "indent", "eol", "start" }
 o.updatetime = 250
+o.clipboard = "unnamedplus"
 
 -- Search
 o.ignorecase = true
