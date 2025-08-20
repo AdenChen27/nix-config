@@ -16,6 +16,13 @@ return {
       diagnostics = {
         enable = true,
       },
+      filters = {
+        custom = {
+          "\\.DS_Store",
+          "^\\.git$",
+          "^.direnv$",
+        },
+      },
     })
 
     -- Keybinding to toggle file tree

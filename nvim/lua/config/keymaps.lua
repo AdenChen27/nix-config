@@ -18,7 +18,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-
 -- <C-l> to correct spelling in insert mode
 vim.keymap.set("i", "<C-l>", "<c-g>u<Esc>[s1z=`]a<c-g>u", { silent = true })
 

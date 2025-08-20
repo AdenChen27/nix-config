@@ -15,6 +15,17 @@ let
   #     knitr
   #   ];
   # };
+  python = pkgs.python312.withPackages (ps: with ps; [
+    pip
+    setuptools
+    pandas
+    wheel
+    jupyterlab
+    notebook
+    ipykernel
+    charset-normalizer
+    openai
+  ]);
 in {
   programs.home-manager.enable = true;
   home.sessionVariables = env;
@@ -44,10 +55,14 @@ in {
     coreutils
     starship
     stylua
+    julia-bin
+    poetry
 
     # rWithPackages
     python312
+    pipx
     python312Packages.pip
+    # python
   ];
 
   programs.git.enable = true;

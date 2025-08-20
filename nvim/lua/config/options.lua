@@ -4,7 +4,7 @@ local o = vim.opt
 o.number = true
 o.relativenumber = true
 o.colorcolumn = "80"
-o.mouse = "v"
+o.mouse = "a"
 o.spell = true
 o.termguicolors = true
 o.conceallevel = 2
@@ -26,7 +26,7 @@ o.hlsearch = false
 o.fileencoding = "utf-8"
 o.backspace = { "indent", "eol", "start" }
 o.updatetime = 250
-o.clipboard = "unnamedplus"
+-- o.clipboard = "unnamedplus"
 
 -- Search
 o.ignorecase = true
