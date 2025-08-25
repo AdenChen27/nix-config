@@ -57,6 +57,7 @@ in {
     stylua
     julia-bin
     poetry
+    ripgrep
 
     # rWithPackages
     python312
