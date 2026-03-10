@@ -39,7 +39,7 @@ in {
 
   home.packages = with pkgs; [
     coreutils
-    nodejs
+    nodejs_22
     pyright
     tree
     tree-sitter
@@ -53,9 +53,7 @@ in {
     code-minimap
     texlive.combined.scheme-full
     openssh
-    nodejs_22
     tmux
-    starship
     stylua
     julia-bin
     poetry
@@ -77,18 +75,16 @@ in {
     ./modules/zsh.nix
     ./modules/kitty.nix
     ./modules/nvim.nix
-    ./modules/wakatime.nix
-    ./modules/python311.nix
     ./modules/ssh.nix
     ./modules/git.nix
   ];
 
   home.activation = {
     boxSymlink = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      ln -snf "/Users/aden/Library/CloudStorage/Box-Box" "$HOME/Box"
-      ln -snf "/Users/aden/Library/CloudStorage/Box-Box/Courses" "$HOME/Courses"
-      ln -snf "/Users/aden/Library/CloudStorage/Box-Box/books" "$HOME/books"
-      ln -snf "/Users/aden/Library/CloudStorage/Box-Box/Econ" "$HOME/Econ"
+      ln -snf "${config.home.homeDirectory}/Library/CloudStorage/Box-Box" "$HOME/Box"
+      ln -snf "${config.home.homeDirectory}/Library/CloudStorage/Box-Box/Courses" "$HOME/Courses"
+      ln -snf "${config.home.homeDirectory}/Library/CloudStorage/Box-Box/books" "$HOME/books"
+      ln -snf "${config.home.homeDirectory}/Library/CloudStorage/Box-Box/Econ" "$HOME/Econ"
     '';
   };
 

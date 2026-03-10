@@ -1,7 +1,4 @@
 {
-  WAKATIME_API_KEY = "88f7285f-22b4-45a1-9c8b-d3f502672cb2";
-  OPENAI_API_KEY = "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";
-
   VISUAL = "vim";
   EDITOR = "vim";
 }

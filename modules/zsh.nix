@@ -31,6 +31,8 @@
       #   ls -lGrth --color=auto --group-directories-first
       # }
 
+      [ -f "$HOME/.secrets" ] && source "$HOME/.secrets"
+
       eval "$(direnv hook zsh)"
       eval "$(starship init zsh)"
     '';

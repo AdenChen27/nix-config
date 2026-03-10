@@ -1,3 +1,5 @@
+# Kept as reference for migrating to a similar time-tracking tool (e.g. Wakapi self-hosted, Hakatime).
+# This module is NOT imported in home.nix.
 { config, pkgs, lib, ... }:
 let
   env = import ../env.nix;

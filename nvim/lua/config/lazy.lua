@@ -6,13 +6,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	{
-		"wakatime/vim-wakatime",
-		config = function()
-			vim.g.wakatime_api_key = os.getenv("WAKATIME_API_KEY")
-		end,
-	},
-
   -- Other Plugins
 	{ import = "plugins" },
 })
