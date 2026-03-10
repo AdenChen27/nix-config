@@ -56,6 +56,9 @@ M.sections = {
 	autosnippet("align*", fmt("\\begin{{align*}}{}\n\\end{{align*}}", { i(1) })),
 	s("beg", fmt("\\begin{{{}}}{}\n\\end{{{}}}", { i(1), i(2), rep(1) })),
 	s("case", fmt("\\begin{{cases}}{}\n\\end{{cases}}", { i(1) })),
+	s("pmat", fmt("\\begin{{pmatrix}}{}\n\\end{{pmatrix}}", { i(1) })),
+	s("bmat", fmt("\\begin{{bmatrix}}{}\n\\end{{bmatrix}}", { i(1) })),
+	s("vmat", fmt("\\begin{{vmatrix}}{}\n\\end{{vmatrix}}", { i(1) })),
 }
 
 -- Text abbreviations (plain snippets)
@@ -76,6 +79,9 @@ M.text_format = {
 	s({ trig = "tit", wordTrig = true }, fmt("\\textit{{{}}}", { i(1) })),
 	s({ trig = "tbf", wordTrig = true }, fmt("\\textbf{{{}}}", { i(1) })),
 	s({ trig = "mrm", wordTrig = true }, fmt("\\mathrm{{{}}}", { i(1) })),
+	s({ trig = "mbb", wordTrig = true }, fmt("\\mathbb{{{}}}", { i(1) })),
+	s({ trig = "mcal", wordTrig = true }, fmt("\\mathcal{{{}}}", { i(1) })),
+	s({ trig = "mfrak", wordTrig = true }, fmt("\\mathfrak{{{}}}", { i(1) })),
 	autosnippet({
 		trig = "^^",
 		wordTrig = false,
@@ -147,6 +153,7 @@ M.math = {
 
 	-- Set notation
 	autosnippet({ trig = "set", name = "set notation" }, fmta("\\{<>\\}<>", { i(1), i(0) }), { condition = in_math }),
+	autosnippet({ trig = "eset", wordTrig = true, condition = in_math }, t("\\emptyset")),
 
 	-- Relations and set symbols
 	s({ trig = "\\", wordTrig = true, condition = in_math }, t("\\setminus ")),
@@ -208,21 +215,35 @@ M.math = {
 	-- Subscripts and superscripts
 	autosnippet(
 		{
-			trig = "([%a%}%]%)])(%d+)",
+			trig = "([%a%}%]%)])(%d)",
 			regTrig = true,
 			wordTrig = false,
-			name = "auto-subscript",
-			-- condition = require("luasnip.extras.expand_conditions").in_mathzone,
+			name = "auto-subscript (single digit)",
 			condition = in_math,
 		},
 		d(1, function(_, snip)
 			local base = snip.captures[1]
 			local sub = snip.captures[2]
 			return sn(nil, {
-				f(function()
-					return base .. "_"
-				end),
+				f(function() return base .. "_" end),
 				t(sub),
+			})
+		end)
+	),
+	autosnippet(
+		{
+			trig = "([%a%}%]%)])(%d%d+)",
+			regTrig = true,
+			wordTrig = false,
+			name = "auto-subscript (multi digit)",
+			condition = in_math,
+		},
+		d(1, function(_, snip)
+			local base = snip.captures[1]
+			local sub = snip.captures[2]
+			return sn(nil, {
+				f(function() return base .. "_{" end),
+				t(sub .. "}"),
 			})
 		end)
 	),
@@ -302,8 +323,17 @@ M.math = {
 
 	--
 	autosnippet({ trig = "!>", wordTrig = false, condition = in_math }, t("\\mapsto ")),
+	autosnippet({ trig = "-->", wordTrig = false, condition = in_math }, t("\\longrightarrow ")),
+	autosnippet({ trig = "=>", wordTrig = false, condition = in_math }, t("\\Rightarrow ")),
+	autosnippet({ trig = "<=", wordTrig = false, condition = in_math }, t("\\Leftarrow ")),
 	autosnippet({ trig = ">>", wordTrig = false, condition = in_math }, t("\\gg")),
 	autosnippet({ trig = "<<", wordTrig = false, condition = in_math }, t("\\ll")),
+	-- Big operators
+	s({ trig = "sum", wordTrig = true, condition = in_math }, fmta("\\sum_{<>}^{<>}<>", { i(1), i(2), i(0) })),
+	s({ trig = "int", wordTrig = true, condition = in_math }, fmta("\\int_{<>}^{<>}<>", { i(1), i(2), i(0) })),
+	s({ trig = "prod", wordTrig = true, condition = in_math }, fmta("\\prod_{<>}^{<>}<>", { i(1), i(2), i(0) })),
+	s({ trig = "lim", wordTrig = true, condition = in_math }, fmta("\\lim_{<> \\to <>}<>", { i(1), i(2), i(0) })),
+
 	-- derivatives etc
 	s(
 		{ trig = "deri", wordTrig = true, condition = in_math },
