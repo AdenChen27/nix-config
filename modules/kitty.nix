@@ -18,6 +18,8 @@
     map cmd+7 goto_tab 7
     map cmd+8 goto_tab 8
     map cmd+9 goto_tab 9
+
+    map cmd+w close_window
   '';
 
   xdg.configFile."kitty/themes/ayu-light.conf".source = ../themes/ayu-light.conf;

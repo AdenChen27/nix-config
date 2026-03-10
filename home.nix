@@ -20,7 +20,9 @@ let
     setuptools
     pandas
     wheel
+    scipy
     jupyterlab
+    matplotlib
     notebook
     ipykernel
     charset-normalizer
@@ -36,6 +38,7 @@ in {
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
+    coreutils
     nodejs
     pyright
     tree
@@ -52,18 +55,20 @@ in {
     openssh
     nodejs_22
     tmux
-    coreutils
     starship
     stylua
     julia-bin
     poetry
     ripgrep
+    imagemagick
+    poppler_utils
+    ghostscript
 
     # rWithPackages
-    python312
-    pipx
-    python312Packages.pip
-    # python
+    # python312
+    # pipx
+    # python312Packages.pip
+    python
   ];
 
   programs.git.enable = true;
@@ -90,6 +95,7 @@ in {
   # Path
   home.sessionPath = [
     "${config.home.homeDirectory}/bin"
+      "${config.home.homeDirectory}/.local/bin"
     "${pkgs.coreutils}/bin"
   ];
   # Scripts in ~/bin

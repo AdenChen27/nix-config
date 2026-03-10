@@ -13,8 +13,9 @@
       csil = "ssh adenc@linux.cs.uchicago.edu";
 
       # ls + vim
-      ls = "ls -G --color=auto --group-directories-first";
-      ll = "ls -lGh --color=auto --group-directories-first";
+      ls = "ls -G --color=auto";
+      # ll = "ls -lGh --color=auto --group-directories-first";
+      ll = "ls -lGh --color=auto";
       vim = "nvim";
       vi = "nvim";
       v = "nvim";

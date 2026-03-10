@@ -1,4 +1,4 @@
-#!/Users/aden/anaconda3/bin/python3
+#! /etc/profiles/per-user/aden/bin/python
 import argparse
 import os
 import subprocess

@@ -34,6 +34,26 @@ return {
 					"-interaction=nonstopmode",
 				},
 			}
+
+      -- override imaps after vimtex init
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "VimtexEventInitPost",
+				callback = function()
+					local add_map = vim.fn["vimtex#imaps#add_map"]
+					add_map({
+						lhs = "`e",
+						rhs = "\\varepsilon",
+						leader = "",
+						wrapper = "vimtex#imaps#wrap_math",
+					})
+					add_map({
+						lhs = "`f",
+						rhs = "\\varphi",
+						leader = "",
+						wrapper = "vimtex#imaps#wrap_math",
+					})
+				end,
+			})
 		end,
 	},
 	-- "KeitaNakamura/tex-conceal.vim",

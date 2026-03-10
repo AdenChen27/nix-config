@@ -55,7 +55,7 @@ M.sections = {
 	s("enum", fmt("\\begin{{enumerate}}[label=(\\roman*)]{}\n\\end{{enumerate}}", { i(1) })),
 	autosnippet("align*", fmt("\\begin{{align*}}{}\n\\end{{align*}}", { i(1) })),
 	s("beg", fmt("\\begin{{{}}}{}\n\\end{{{}}}", { i(1), i(2), rep(1) })),
-	s("case", fmt("\\begin{{cases}}[label=(\\roman*)]{}\n\\end{{cases}}", { i(1) })),
+	s("case", fmt("\\begin{{cases}}{}\n\\end{{cases}}", { i(1) })),
 }
 
 -- Text abbreviations (plain snippets)
@@ -135,8 +135,8 @@ M.math = {
 	}),
 
 	autosnippet({ trig = "!=", dscr = "not equal", wordTrig = true, condition = in_math }, t("\\neq ")),
-  autosnippet({ trig = ":=", dscr = "coloneqq", wordTrig = true, condition = in_math }, t("\\coloneqq")),
-	autosnippet({ trig = "=:", dscr = "eqqcolon", wordTrig = true, condition = in_math }, t("\\eqqcolon")),
+  autosnippet({ trig = ":=", dscr = "coloneq", wordTrig = true, condition = in_math }, t("\\coloneqq")),
+	autosnippet({ trig = "=:", dscr = "eqcolon", wordTrig = true, condition = in_math }, t("\\eqqcolon")),
 	s({ trig = "ceil", wordTrig = true, condition = in_math }, fmt("\\left\\lceil {} \\right\\rceil ", { i(1) })),
 	s({ trig = "floor", wordTrig = true, condition = in_math }, fmt("\\left\\lfloor {} \\right\\rfloor ", { i(1) })),
 
@@ -156,7 +156,7 @@ M.math = {
 	s({ trig = "ncc", wordTrig = true, condition = in_math }, t("\\supset ")),
 	s({ trig = "ncceq", wordTrig = true, condition = in_math }, t("\\supseteq ")),
 	s({ trig = "nccneq", wordTrig = true, condition = in_math }, t("\\supsetneq ")),
-	s({ trig = "compl", wordTrig = true, condition = in_math }, t("^\\complement ")),
+	s({ trig = "compl", wordTrig = false, condition = in_math }, t("^\\complement")),
 
 	-- Common symbols
 	s({ trig = "inv", wordTrig = false, condition = in_math }, t("^{-1}")),
@@ -305,10 +305,14 @@ M.math = {
 	autosnippet({ trig = ">>", wordTrig = false, condition = in_math }, t("\\gg")),
 	autosnippet({ trig = "<<", wordTrig = false, condition = in_math }, t("\\ll")),
 	-- derivatives etc
-	autosnippet(
+	s(
 		{ trig = "deri", wordTrig = true, condition = in_math },
-		fmt("\\frac{{\\d {}}}{{\\d {}}}", { i(1, "V"), i(2, "x") })
+		fmt("\\frac{{\\d {}}}{{\\d {}}}", { i(1, ""), i(2, "x") })
 	),
+  s(
+    { trig = "derik", wordTrig = true, condition = in_math },
+    fmt("\\frac{{\\d^{{{}}} {}}}{{\\d {}^{{{}}}}}", { i(1, "k"), i(2, ""), i(3, "x"), rep(1) })
+  ),
 	s(
 		{ trig = "part", wordTrig = true, condition = in_math },
 		fmt("\\frac{{\\partial {}}}{{\\partial {}}}", { i(1, "V"), i(2, "x") })
