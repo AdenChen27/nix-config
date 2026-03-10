@@ -1,10 +1,10 @@
 return {
 	-- Colorschemes
-	{ "ayu-theme/ayu-vim", name = "ayu" },
-	{ "catppuccin/nvim", name = "catppuccin" },
-	{ "projekt0n/github-nvim-theme", name = "github-theme" },
-	{ "EdenEast/nightfox.nvim" },
-	{ "marko-cerovac/material.nvim" },
+	-- { "ayu-theme/ayu-vim", name = "ayu" },
+	{ "catppuccin/nvim", name = "catppuccin", priority = 1000, lazy = false },
+	-- { "projekt0n/github-nvim-theme", name = "github-theme" },
+	-- { "EdenEast/nightfox.nvim" },
+	-- { "marko-cerovac/material.nvim" },
 
 	-- Statusline
 	{

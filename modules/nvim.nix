@@ -4,6 +4,5 @@
   home.file."/.config/nvim/lua/config".source = ../nvim/lua/config;
   home.file."/.config/nvim/lua/plugins".source = ../nvim/lua/plugins;
   home.file."/.config/nvim/lua/lsp".source = ../nvim/lua/lsp;
-  home.file."/.config/nvim/after/plugin".source = ../nvim/after/plugin;
 }
 

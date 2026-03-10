@@ -35,7 +35,7 @@ in {
   home.username = "aden";
   home.homeDirectory = "/Users/aden";
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
     coreutils

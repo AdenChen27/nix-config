@@ -1,5 +1,6 @@
-# Kept as reference for migrating to a similar time-tracking tool (e.g. Wakapi self-hosted, Hakatime).
-# This module is NOT imported in home.nix.
+# TODO: Re-enable when setting up time tracking again (Wakapi self-hosted or Hakatime).
+# Requires WAKATIME_API_KEY in env.nix and importing this module in home.nix.
+# This module is NOT currently imported in home.nix.
 { config, pkgs, lib, ... }:
 let
   env = import ../env.nix;
