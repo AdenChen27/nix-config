@@ -4,7 +4,7 @@ for _, key in ipairs({ "h", "j", "k", "l" }) do
 end
 
 -- <leader>/ to comment out the current line
-vim.keymap.set("n", "<leader>/", ":Commentary<CR>j")
+vim.keymap.set("n", "<leader>/", "gcc", { remap = true })
 
 -- <leader>F to run stylua on the current file
 vim.api.nvim_create_autocmd("FileType", {

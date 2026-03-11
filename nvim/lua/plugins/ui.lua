@@ -29,4 +29,23 @@ return {
 
 	-- Icons (used by lualine, telescope, etc.)
 	{ "nvim-tree/nvim-web-devicons", lazy = true },
+
+	-- Keybinding hints
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("which-key").setup()
+		end,
+	},
+
+	-- Markdown rendering
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		ft = { "markdown" },
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("render-markdown").setup()
+		end,
+	},
 }
