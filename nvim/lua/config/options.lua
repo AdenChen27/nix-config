@@ -10,15 +10,11 @@ o.termguicolors = true
 o.conceallevel = 2
 o.signcolumn = "yes"
 
-vim.api.nvim_set_hl(0, "Conceal", { link = "Normal" })
-vim.api.nvim_set_hl(0, "SpellBad", { underline = true })
-
 vim.opt.scrolloff = 5
 
 
 -- Colorschemes
 o.background = "light"
-vim.cmd("colorscheme catppuccin-latte")
 
 -- Search Behavior
 o.incsearch = true
