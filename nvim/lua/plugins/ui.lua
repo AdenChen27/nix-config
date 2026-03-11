@@ -21,15 +21,12 @@ return {
 
   -- Color
 	{
-		"NvChad/nvim-colorizer.lua",
+		"brenoprata10/nvim-highlight-colors",
 		config = function()
-			require("colorizer").setup()
+			require("nvim-highlight-colors").setup()
 		end,
 	},
 
 	-- Icons (used by lualine, telescope, etc.)
 	{ "nvim-tree/nvim-web-devicons", lazy = true },
-
-	-- Smooth scrolling
-	{ "psliwka/vim-smoothie" },
 }

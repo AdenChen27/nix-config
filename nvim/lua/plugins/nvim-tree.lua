@@ -9,19 +9,17 @@ return {
       },
       filters = {
         dotfiles = false,
+        custom = {
+          "\\.DS_Store",
+          "^\\.git$",
+          "^.direnv$",
+        },
       },
       git = {
         enable = true,
       },
       diagnostics = {
         enable = true,
-      },
-      filters = {
-        custom = {
-          "\\.DS_Store",
-          "^\\.git$",
-          "^.direnv$",
-        },
       },
     })
 

@@ -3,14 +3,14 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      local lspconfig = require("lspconfig")
       local on_attach = require("lsp.on_attach").on_attach
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      lspconfig.pyright.setup({
+      vim.lsp.config("pyright", {
         on_attach = on_attach,
         capabilities = capabilities,
       })
+      vim.lsp.enable("pyright")
     end,
   }
 }
