@@ -80,6 +80,16 @@ cmd("BufWinEnter", {
 	end,
 })
 
+-- Use VimTeX folding for TeX files (overrides global Treesitter foldexpr)
+cmd("FileType", {
+	group = aug("TexFoldSettings", { clear = true }),
+	pattern = { "tex" },
+	callback = function()
+		vim.opt_local.foldmethod = "expr"
+		vim.opt_local.foldexpr = "vimtex#fold#level(v:lnum)"
+		vim.opt_local.foldtext = "vimtex#fold#text()"
+	end,
+})
 
 -- FileType-specific indentation
 cmd("FileType", {
