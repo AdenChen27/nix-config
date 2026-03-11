@@ -59,6 +59,14 @@ M.sections = {
 	s("pmat", fmt("\\begin{{pmatrix}}{}\n\\end{{pmatrix}}", { i(1) })),
 	s("bmat", fmt("\\begin{{bmatrix}}{}\n\\end{{bmatrix}}", { i(1) })),
 	s("vmat", fmt("\\begin{{vmatrix}}{}\n\\end{{vmatrix}}", { i(1) })),
+	s("fig", fmt(
+		"\\begin{{figure}}[{}]\n  \\centering\n  \\includegraphics[width={}\\textwidth]{{{}}}\n  \\caption{{{}}}\n  \\label{{fig:{}}}\n\\end{{figure}}",
+		{ i(1, "htbp"), i(2, "0.8"), i(3, "filename"), i(4, "caption"), i(5) }
+	)),
+	s("tab", fmt(
+		"\\begin{{table}}[{}]\n  \\centering\n  \\begin{{tabular}}{{{}}}\n    {}\n  \\end{{tabular}}\n  \\caption{{{}}}\n  \\label{{tab:{}}}\n\\end{{table}}",
+		{ i(1, "htbp"), i(2, "cc"), i(3), i(4, "caption"), i(5) }
+	)),
 }
 
 -- Text abbreviations (plain snippets)
