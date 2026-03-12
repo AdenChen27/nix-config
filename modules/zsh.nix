@@ -21,7 +21,7 @@
       v = "nvim";
 
       # Darwin rebuild
-      drs = "sudo darwin-rebuild switch --flake ~/nix-config#\"Aden's Brain\"";
+      drs = "sudo darwin-rebuild switch --flake ~/nix-config#\"Aden's Brain\" && exec zsh";
     };
 
     initContent = ''
