@@ -28,4 +28,19 @@ return {
 			})
 		end,
 	},
+	{
+		"yetone/avante.nvim",
+		event = "VeryLazy",
+		build = "make",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			"stevearc/dressing.nvim",
+			"nvim-tree/nvim-web-devicons",
+			"zbirenbaum/copilot.lua",
+		},
+		opts = {
+			provider = "copilot",
+		},
+	},
 }
