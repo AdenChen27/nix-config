@@ -8,13 +8,10 @@ return {
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
     "rafamadriz/friendly-snippets",
-    "zbirenbaum/copilot-cmp",
   },
   config = function()
     local cmp = require("cmp")
     local luasnip = require("luasnip")
-
-    require("copilot_cmp").setup()
 
     local loaded_snippets = false
     vim.api.nvim_create_autocmd("FileType", {
@@ -70,7 +67,6 @@ return {
         end, { "i", "s" }),
       }),
       sources = cmp.config.sources({
-        { name = "copilot" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
       }, {

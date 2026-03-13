@@ -2,18 +2,13 @@ return {
 	{
 		"zbirenbaum/copilot.lua",
 		cmd = "Copilot",
-		event = "InsertEnter",
+		event = "VimEnter",
 		config = function()
 			require("copilot").setup({
-				suggestion = { enabled = false }, -- handled by copilot-cmp
-				panel = { enabled = false },      -- handled by copilot-cmp
-				filetypes = { ["*"] = true },     -- attach everywhere; autocmds handle courses
+				suggestion = { enabled = true, auto_trigger = true, hide_during_completion = false, keymap = { accept = "<C-j>" } },
+				panel = { enabled = false },
+				filetypes = { ["*"] = true },
 			})
-
-			-- Track which buffers have already had their initial courses-disable applied
-			-- this session. Cleared on BufEnter so each buffer visit gets one disable,
-			-- but manual :Copilot enable persists for the rest of that visit.
-			local initialized = {}
 
 			local function in_courses()
 				local path = vim.fn.expand("%:p")
@@ -22,30 +17,28 @@ return {
 					and not string.find(string.lower(name), "notes")
 			end
 
-			-- When entering a non-courses buffer, re-enable Copilot.
-			-- Also clear the initialized flag so the next visit to a courses buffer
-			-- gets a fresh disable.
+			local initialized = {}
+
+			-- Apply to initial buffer immediately (its BufEnter fired before VimEnter)
+			local init_buf = vim.api.nvim_get_current_buf()
+			if in_courses() then
+				initialized[init_buf] = true
+				vim.cmd("Copilot disable")
+			end
+
 			vim.api.nvim_create_autocmd("BufEnter", {
 				pattern = "*",
 				callback = function()
 					local buf = vim.api.nvim_get_current_buf()
-					initialized[buf] = nil
-					if not in_courses() then
-						vim.cmd("Copilot enable")
-					end
-				end,
-			})
-
-			-- On first InsertEnter per buffer visit, disable if in courses.
-			-- After that, leave Copilot state alone so manual toggles work.
-			vim.api.nvim_create_autocmd("InsertEnter", {
-				pattern = "*",
-				callback = function()
-					local buf = vim.api.nvim_get_current_buf()
-					if initialized[buf] then return end
-					initialized[buf] = true
 					if in_courses() then
-						vim.cmd("Copilot disable")
+						-- Only disable on first visit; manual :Copilot enable persists until restart
+						if not initialized[buf] then
+							initialized[buf] = true
+							vim.cmd("Copilot disable")
+						end
+					else
+						initialized[buf] = nil
+						vim.cmd("Copilot enable")
 					end
 				end,
 			})
