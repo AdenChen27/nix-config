@@ -1,8 +1,7 @@
 return {
 	{
 		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "VimEnter",
+		lazy = false,
 		config = function()
 			require("copilot").setup({
 				suggestion = { enabled = true, auto_trigger = true, hide_during_completion = false, keymap = { accept = "<C-j>" } },
@@ -18,13 +17,6 @@ return {
 			end
 
 			local initialized = {}
-
-			-- Apply to initial buffer immediately (its BufEnter fired before VimEnter)
-			local init_buf = vim.api.nvim_get_current_buf()
-			if in_courses() then
-				initialized[init_buf] = true
-				vim.cmd("Copilot disable")
-			end
 
 			vim.api.nvim_create_autocmd("BufEnter", {
 				pattern = "*",
