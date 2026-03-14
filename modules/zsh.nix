@@ -14,8 +14,7 @@
 
       # ls + vim
       ls = "ls -G --color=auto";
-      # ll = "ls -lGh --color=auto --group-directories-first";
-      ll = "ls -lGh --color=auto";
+      ll = "ls -lGh --color=auto --group-directories-first";
       vim = "nvim";
       vi = "nvim";
       v = "nvim";
