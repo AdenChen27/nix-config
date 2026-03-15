@@ -4,6 +4,16 @@
     git
   ];
 
+  system.primaryUser = "aden";
+
+  homebrew = {
+    enable = true;
+    # Add brews/casks/taps here if you want them declarative.
+    # Example:
+    # brews = [ "mas" ];
+    # casks = [ "google-chrome" ];
+  };
+
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -13,4 +23,3 @@
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 }
-

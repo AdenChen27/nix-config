@@ -15,8 +15,6 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
   {
-    nixpkgs = nixpkgs;
-
     darwinConfigurations."Aden's Brain" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
@@ -36,4 +34,3 @@
     };
   };
 }
-

@@ -42,13 +42,13 @@ return {
 					local add_map = vim.fn["vimtex#imaps#add_map"]
 					add_map({
 						lhs = "`e",
-						rhs = "\\varepsilon",
+						rhs = "\\eps",
 						leader = "",
 						wrapper = "vimtex#imaps#wrap_math",
 					})
 					add_map({
 						lhs = "`f",
-						rhs = "\\varphi",
+						rhs = "\\vphi",
 						leader = "",
 						wrapper = "vimtex#imaps#wrap_math",
 					})

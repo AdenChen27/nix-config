@@ -91,9 +91,12 @@ in {
   # Path
   home.sessionPath = [
     "${config.home.homeDirectory}/bin"
-      "${config.home.homeDirectory}/.local/bin"
+    "${config.home.homeDirectory}/.local/bin"
     "${pkgs.coreutils}/bin"
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
   ];
+
   # Scripts in ~/bin
   home.file."bin".source = ./bin;
   home.file."bin".recursive = true;
@@ -102,4 +105,3 @@ in {
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 }
-
