@@ -1,7 +1,7 @@
 local u = require("snippets.tex.utils")
 local s, i, fmt = u.s, u.i, u.fmt
 local rep, not_in_math = u.rep, u.not_in_math
-local env_pair, sec_pair = u.env_pair, u.sec_pair
+local env_pair, sec_pair, env = u.env_pair, u.sec_pair, u.env
 
 local snippets = {}
 
@@ -28,16 +28,16 @@ vim.list_extend(snippets, env_pair("gather", "gather"))
 
 -- Lists
 vim.list_extend(snippets, {
-	s({ trig = "item", condition = not_in_math }, fmt("\\begin{{itemize}}{}\n\\end{{itemize}}", { i(1) })),
+	env("item", "itemize"),
 	s({ trig = "enum", condition = not_in_math }, fmt("\\begin{{enumerate}}[label=(\\roman*)]{}\n\\end{{enumerate}}", { i(1) })),
 })
 
 -- Matrices
 vim.list_extend(snippets, {
-	s({ trig = "case", condition = not_in_math }, fmt("\\begin{{cases}}{}\n\\end{{cases}}", { i(1) })),
-	s({ trig = "pmat", condition = not_in_math }, fmt("\\begin{{pmatrix}}{}\n\\end{{pmatrix}}", { i(1) })),
-	s({ trig = "bmat", condition = not_in_math }, fmt("\\begin{{bmatrix}}{}\n\\end{{bmatrix}}", { i(1) })),
-	s({ trig = "vmat", condition = not_in_math }, fmt("\\begin{{vmatrix}}{}\n\\end{{vmatrix}}", { i(1) })),
+	env("case", "cases"),
+	env("pmat", "pmatrix"),
+	env("bmat", "bmatrix"),
+	env("vmat", "vmatrix"),
 })
 
 -- Generic environment

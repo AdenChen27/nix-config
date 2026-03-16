@@ -59,6 +59,14 @@ function M.env_pair(trigger, env_name)
 	}
 end
 
+--- Returns a single snippet for \begin{env}...\end{env} (no starred variant)
+function M.env(trigger, env_name)
+	return s(
+		{ trig = trigger, condition = M.not_in_math },
+		fmt(string.format("\\begin{{%s}}{}\n\\end{{%s}}", env_name, env_name), { i(1) })
+	)
+end
+
 --- Returns { regular_snippet, starred_autosnippet } for \section{}, etc.
 function M.sec_pair(trigger, cmd_name)
 	local sec_fmt = "\\%s{{{}}}"

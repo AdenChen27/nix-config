@@ -1,19 +1,44 @@
-{ config, pkgs, ... }: {
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-  ];
-
+# System-level macOS settings (Dock, Finder, keyboard, Homebrew casks).
+# User-level config (packages, dotfiles, shell) lives in home.nix.
+{ ... }: {
   system.primaryUser = "aden";
 
   homebrew = {
     enable = true;
-    # Add brews/casks/taps here if you want them declarative.
-    # Example:
-    # brews = [ "mas" ];
-    # casks = [ "google-chrome" ];
+    casks = [
+      "codex"
+    ];
+    onActivation.cleanup = "zap";
   };
 
+  # Dock
+  system.defaults.dock = {
+    autohide = true;
+    tilesize = 36;
+    show-recents = false;
+    mru-spaces = false;
+  };
+
+  # Finder
+  system.defaults.finder = {
+    AppleShowAllExtensions = true;
+    ShowPathbar = true;
+    FXPreferredViewStyle = "Nlsv"; # list view
+    _FXShowPosixPathInTitle = true;
+  };
+
+  # Global keyboard / UI
+  system.defaults.NSGlobalDomain = {
+    AppleShowAllExtensions = true;
+    KeyRepeat = 2;
+    InitialKeyRepeat = 15;
+  };
+
+  # Trackpad
+  system.defaults.trackpad = {
+    Clicking = true; # tap to click
+    TrackpadRightClick = true;
+  };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 

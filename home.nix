@@ -1,31 +1,14 @@
 { config, pkgs, lib, ... }:
 let
   env = import ./env.nix;
-  # rWithPackages = pkgs.rWrapper.override {
-  #   packages = with pkgs.rPackages; [
-  #     estimatr
-  #     tidyverse
-  #     modelsummary
-  #     fixest
-  #     broom
-  #     sandwich
-  #     data_table
-  #     readxl
-  #     haven
-  #     knitr
-  #   ];
-  # };
   python = pkgs.python312.withPackages (ps: with ps; [
     pip
-    setuptools
+    numpy
     pandas
-    wheel
     scipy
     jupyterlab
     matplotlib
-    notebook
     ipykernel
-    charset-normalizer
     openai
   ]);
 in {
@@ -48,7 +31,7 @@ in {
     fd
     bat
     fzf
-    pkgs.nerd-fonts.jetbrains-mono
+    nerd-fonts.jetbrains-mono
     neovim
     code-minimap
     texlive.combined.scheme-full
@@ -56,16 +39,13 @@ in {
     tmux
     stylua
     julia-bin
-    poetry
     ripgrep
+    gh
+    wget
     imagemagick
     poppler_utils
     ghostscript
 
-    # rWithPackages
-    # python312
-    # pipx
-    # python312Packages.pip
     python
   ];
 

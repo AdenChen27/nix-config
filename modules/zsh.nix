@@ -24,12 +24,6 @@
     };
 
     initContent = ''
-      # Run ll on directory change
-      # function chpwd() {
-      #   emulate -L zsh
-      #   ls -lGrth --color=auto --group-directories-first
-      # }
-
       [ -f "$HOME/.secrets" ] && source "$HOME/.secrets"
 
       if [ -x /opt/homebrew/bin/brew ]; then

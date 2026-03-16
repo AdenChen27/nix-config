@@ -13,16 +13,13 @@ return {
     local cmp = require("cmp")
     local luasnip = require("luasnip")
 
-    local loaded_snippets = false
     vim.api.nvim_create_autocmd("FileType", {
       pattern = "*",
       callback = function()
-        if not loaded_snippets then
-          -- priority 999 keeps friendly-snippets below custom lua snippets (default 1000)
-          -- exclude tex: friendly-snippets' latex snippets conflict with custom ones
-          require("luasnip.loaders.from_vscode").lazy_load({ default_priority = 999, exclude = { "tex" } })
-          loaded_snippets = true
-        end
+        -- priority 999 keeps friendly-snippets below custom lua snippets (default 1000)
+        -- exclude tex: friendly-snippets' latex snippets conflict with custom ones
+        require("luasnip.loaders.from_vscode").lazy_load({ default_priority = 999, exclude = { "tex" } })
+        return true -- self-delete: only needs to run once
       end,
     })
 

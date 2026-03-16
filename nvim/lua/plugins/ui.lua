@@ -1,6 +1,4 @@
 return {
-	-- Colorschemes
-	-- { "ayu-theme/ayu-vim", name = "ayu" },
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
@@ -12,9 +10,6 @@ return {
 			vim.api.nvim_set_hl(0, "SpellBad", { underline = true })
 		end,
 	},
-	-- { "projekt0n/github-nvim-theme", name = "github-theme" },
-	-- { "EdenEast/nightfox.nvim" },
-	-- { "marko-cerovac/material.nvim" },
 
 	-- Statusline
 	{

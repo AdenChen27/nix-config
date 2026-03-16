@@ -4,10 +4,17 @@
 
 local M = {}
 
--- math / not math zones
+-- math / not math zones (cached per event-loop tick)
+
+local math_cache = { valid = false, value = false }
 
 function M.in_math()
-	return vim.fn["vimtex#syntax#in_mathzone"]() == 1
+	if not math_cache.valid then
+		math_cache.value = vim.fn["vimtex#syntax#in_mathzone"]() == 1
+		math_cache.valid = true
+		vim.schedule(function() math_cache.valid = false end)
+	end
+	return math_cache.value
 end
 
 -- comment detection
