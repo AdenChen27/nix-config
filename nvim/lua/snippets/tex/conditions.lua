@@ -7,7 +7,7 @@ local M = {}
 -- math / not math zones
 
 function M.in_math()
-	return vim.api.nvim_eval("vimtex#syntax#in_mathzone()") == 1
+	return vim.fn["vimtex#syntax#in_mathzone"]() == 1
 end
 
 -- comment detection
@@ -47,7 +47,7 @@ function M.in_align()
 end
 
 function M.show_line_begin(line_to_cursor)
-	return #line_to_cursor <= 3
+	return #line_to_cursor <= 3 -- allows up to 3 chars of leading whitespace/indentation
 end
 
 return M

@@ -101,6 +101,21 @@ in {
   home.file."bin".source = ./bin;
   home.file."bin".recursive = true;
 
+  # Update notes LaunchAgent (replaces cron: 0 1 * * 5)
+  launchd.agents.update-notes = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "${config.home.homeDirectory}/bin/update-notes.sh" ];
+      StartCalendarInterval = [{
+        Weekday = 5;
+        Hour = 1;
+        Minute = 0;
+      }];
+      StandardOutPath = "${config.home.homeDirectory}/Library/Logs/update-notes.log";
+      StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/update-notes.log";
+    };
+  };
+
   # direnv
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
