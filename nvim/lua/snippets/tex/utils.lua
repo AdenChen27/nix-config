@@ -67,6 +67,14 @@ function M.env(trigger, env_name)
 	)
 end
 
+--- Like env(), but gated on being inside math mode
+function M.math_env(trigger, env_name)
+	return s(
+		{ trig = trigger, condition = tex.in_math },
+		fmt(string.format("\\begin{{%s}}{}\n\\end{{%s}}", env_name, env_name), { i(1) })
+	)
+end
+
 --- Returns { regular_snippet, starred_autosnippet } for \section{}, etc.
 function M.sec_pair(trigger, cmd_name)
 	local sec_fmt = "\\%s{{{}}}"

@@ -1,7 +1,7 @@
 local u = require("snippets.tex.utils")
 local s, i, fmt = u.s, u.i, u.fmt
 local rep, not_in_math = u.rep, u.not_in_math
-local env_pair, sec_pair, env = u.env_pair, u.sec_pair, u.env
+local env_pair, sec_pair, env, math_env = u.env_pair, u.sec_pair, u.env, u.math_env
 
 local snippets = {}
 
@@ -34,10 +34,10 @@ vim.list_extend(snippets, {
 
 -- Matrices
 vim.list_extend(snippets, {
-	env("case", "cases"),
-	env("pmat", "pmatrix"),
-	env("bmat", "bmatrix"),
-	env("vmat", "vmatrix"),
+	math_env("case", "cases"),
+	math_env("pmat", "pmatrix"),
+	math_env("bmat", "bmatrix"),
+	math_env("vmat", "vmatrix"),
 })
 
 -- Generic environment

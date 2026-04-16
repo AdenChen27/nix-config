@@ -10,6 +10,7 @@ let
     matplotlib
     ipykernel
     openai
+    statsmodels
   ]);
 in {
   programs.home-manager.enable = true;
@@ -45,6 +46,7 @@ in {
     imagemagick
     poppler_utils
     ghostscript
+    pandoc
 
     python
   ];

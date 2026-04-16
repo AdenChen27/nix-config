@@ -9,6 +9,10 @@ return {
 			vim.g.vimtex_quickfix_mode = 0
 			vim.g.vimtex_fold_enabled = 1
 			vim.g.vimtex_matchparen_enabled = 0
+      vim.g.vimtex_syntax_custom_cmds = {
+				{ name = 'vec', mathmode = true, conceal = true, argstyle = 'bold' },
+				{ name = 'vocab', conceal = true, argstyle = 'bold' },
+			}
       vim.g.vimtex_syntax_conceal = {
 				accents = 1,
 				ligatures = 1,

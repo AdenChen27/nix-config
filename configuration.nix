@@ -24,7 +24,7 @@
     AppleShowAllExtensions = true;
     ShowPathbar = true;
     FXPreferredViewStyle = "Nlsv"; # list view
-    _FXShowPosixPathInTitle = true;
+    _FXShowPosixPathInTitle = false;
   };
 
   # Global keyboard / UI

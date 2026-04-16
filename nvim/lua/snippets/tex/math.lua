@@ -125,21 +125,22 @@ vim.list_extend(snippets, {
 	s({ trig = "ul", wordTrig = true, condition = in_math }, fmt("\\underline{{{}}}", { i(1) })),
 	autosnippet({ trig = "vec", wordTrig = true, condition = in_math }, fmt("\\vec{{{}}}", { i(1) })),
 	s({ trig = "dot", wordTrig = false, condition = in_math }, fmt("\\dot{{{}}}", { i(1) })),
-	s({ trig = "ddot", wordTrig = false, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
+	s({ trig = "ddot", wordTrig = false, priority = 1001, condition = in_math }, fmt("\\ddot{{{}}}", { i(1) })),
 
 	-- Postfix decorations
-	-- Mode 2: single-char postfix (auto) — frontier pattern prevents match after another word char
+	-- Mode 2: single-char postfix — frontier pattern prevents match after another word char
+	-- hat/bar/tilde are auto; ol/ul are tab-triggered
 	postfix("hat", "(%f[%w]%w)hat", "\\hat{%s}"),
 	postfix("bar", "(%f[%w]%w)bar", "\\bar{%s}"),
 	postfix("tilde", "(%f[%w]%w)tilde", "\\tilde{%s}"),
-	postfix("overline", "(%w)ol", "\\overline{%s}"),
-	postfix("underline", "(%w)ul", "\\underline{%s}"),
+	postfix("overline", "(%f[%w]%w)ol", "\\overline{%s}", nil, false),
+	postfix("underline", "(%f[%w]%w)ul", "\\underline{%s}", nil, false),
 	-- Mode 3: multi-char postfix — tab for bar/tilde/hat (wide variants), auto for ol/ul
 	postfix("widehat", "([\\%w][%w]+)hat", "\\widehat{%s}", { priority = 2000 }, false),
 	postfix("overline", "([\\%w][%w]+)bar", "\\overline{%s}", { priority = 2000 }, false),
 	postfix("widetilde", "([\\%w][%w]+)tilde", "\\widetilde{%s}", { priority = 2000 }, false),
-	postfix("overline", "([\\%w][%w]+)ol", "\\overline{%s}", { priority = 2000 }),
-	postfix("underline", "([\\%w][%w]+)ul", "\\underline{%s}", { priority = 2000 }),
+	postfix("overline", "([\\%w][%w]+)ol", "\\overline{%s}", { priority = 2000 }, false),
+	postfix("underline", "([\\%w][%w]+)ul", "\\underline{%s}", { priority = 2000 }, false),
 	postfix("ddot", "(%w+)ddot", "\\ddot{%s}"),
 	postfix("vec", "(%w+),%.", "\\vec{%s}"),
 	postfix("vec", "(%w+)%.,", "\\vec{%s}"),
@@ -237,11 +238,11 @@ vim.list_extend(snippets, {
 	-- Derivatives
 	s(
 		{ trig = "deri", wordTrig = true, condition = in_math },
-		fmt("\\frac{{\\d {}}}{{\\d {}}}", { i(1, ""), i(2, "x") })
+		fmt("\\frac{{\\dd {}}}{{\\dd {}}}", { i(1, ""), i(2, "x") })
 	),
 	s(
 		{ trig = "derik", wordTrig = true, condition = in_math },
-		fmt("\\frac{{\\d^{{{}}} {}}}{{\\d {}^{{{}}}}}", { i(1, "k"), i(2, ""), i(3, "x"), rep(1) })
+		fmt("\\frac{{\\dd^{{{}}} {}}}{{\\dd {}^{{{}}}}}", { i(1, "k"), i(2, ""), i(3, "x"), rep(1) })
 	),
 	s(
 		{ trig = "part", wordTrig = true, condition = in_math },

@@ -1,5 +1,11 @@
 if !has('conceal') | finish | endif
 
+" Annotation command and environment highlights
+syntax match texCmdDraftnote "\%#=1\\draftnote\>"
+syntax match texEnvItodo /\<itodo\>/ contained containedin=texEnvArgName
+highlight def link texCmdDraftnote VimtexTodo
+highlight def link texEnvItodo VimtexTodo
+
 " Superscript complement
 syntax match texMathSymbol /\^\s*\\complement\>/ contained conceal cchar=ᶜ
 
