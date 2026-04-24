@@ -7,6 +7,10 @@
     enable = true;
     casks = [
       "codex"
+      "hammerspoon"
+      "iterm2"
+      "karabiner-elements"
+      "sioyek"
     ];
     onActivation.cleanup = "zap";
   };
