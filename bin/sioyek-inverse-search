@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+file="$1"
+line="$2"
+
+socket=$(find "${TMPDIR:-/tmp}" /tmp -maxdepth 4 -type s 2>/dev/null \
+  | grep -i nvim \
+  | xargs ls -t 2>/dev/null \
+  | head -1)
+
+[[ -n "$socket" ]] && nvim --server "$socket" \
+  --remote-send "<C-\\><C-n>:drop +${line} ${file}<CR>"

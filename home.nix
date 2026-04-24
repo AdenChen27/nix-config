@@ -47,6 +47,7 @@ in {
     poppler_utils
     ghostscript
     pandoc
+    sioyek
 
     python
   ];
@@ -97,6 +98,12 @@ in {
       StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/update-notes.log";
     };
   };
+
+  home.file."Library/Application Support/sioyek/prefs_user.config".text = ''
+    should_launch_new_window      1
+    startup_commands              toggle_synctex
+    inverse_search_command        ${config.home.homeDirectory}/bin/sioyek-inverse-search %1 %2
+  '';
 
   # direnv
   programs.direnv.enable = true;
