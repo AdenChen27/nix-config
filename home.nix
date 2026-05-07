@@ -48,6 +48,7 @@ in {
     ghostscript
     pandoc
     python
+    uv
   ];
 
   programs.git.enable = true;
@@ -58,14 +59,13 @@ in {
     ./modules/nvim.nix
     ./modules/ssh.nix
     ./modules/git.nix
+    ./modules/hammerspoon.nix
+    ./modules/sioyek.nix
+    ./modules/karabiner.nix
+    ./modules/tex.nix
   ];
 
   home.activation = {
-    karabinerConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      mkdir -p "$HOME/.config/karabiner"
-      cp ${./karabiner.json} "$HOME/.config/karabiner/karabiner.json"
-      chmod 644 "$HOME/.config/karabiner/karabiner.json"
-    '';
     boxSymlink = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       ln -snf "${config.home.homeDirectory}/Library/CloudStorage/Box-Box" "$HOME/Box"
       ln -snf "${config.home.homeDirectory}/Library/CloudStorage/Box-Box/Courses" "$HOME/Courses"
@@ -101,35 +101,6 @@ in {
       StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/update-notes.log";
     };
   };
-
-  home.file.".hammerspoon/init.lua".text = ''
-    local hyper = {"cmd", "ctrl", "alt", "shift"}
-
-    local function focus(app)
-      return function()
-        hs.application.launchOrFocus(app)
-      end
-    end
-
-    hs.hotkey.bind(hyper, "T", focus("kitty"))
-    hs.hotkey.bind(hyper, "C", focus("Google Chrome"))
-    hs.hotkey.bind(hyper, "Z", focus("Zotero"))
-    hs.hotkey.bind(hyper, "P", focus("Sioyek"))
-
-    hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/init.lua", hs.reload):start()
-  '';
-
-  home.file."Library/Application Support/sioyek/keys_user.config".text = ''
-    next_page     J
-    previous_page K
-    close_window  x
-  '';
-
-  home.file."Library/Application Support/sioyek/prefs_user.config".text = ''
-    should_launch_new_window      1
-    startup_commands              toggle_synctex
-    inverse_search_command        ${config.home.homeDirectory}/bin/sioyek-inverse-search %1 %2
-  '';
 
   # direnv
   programs.direnv.enable = true;

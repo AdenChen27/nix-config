@@ -20,24 +20,24 @@ return {
 			require("nvim-autopairs").setup()
 		end,
 	},
-	{
-		"tris203/precognition.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("precognition").setup()
-		end,
-	},
-	{
-		"timseriakov/spamguard.nvim",
-		event = "VeryLazy",
-		config = function()
-			local spamguard = require("spamguard")
-			spamguard.setup({})
-			vim.schedule(function()
-				spamguard.enable()
-			end)
-		end,
-	},
+	-- {
+	-- 	"tris203/precognition.nvim",
+	-- 	event = "VeryLazy",
+	-- 	config = function()
+	-- 		require("precognition").setup()
+	-- 	end,
+	-- },
+	-- {
+	-- 	"timseriakov/spamguard.nvim",
+	-- 	event = "VeryLazy",
+	-- 	config = function()
+	-- 		local spamguard = require("spamguard")
+	-- 		spamguard.setup({})
+	-- 		vim.schedule(function()
+	-- 			spamguard.enable()
+	-- 		end)
+	-- 	end,
+	-- },
 	{
 		"gaborvecsei/usage-tracker.nvim",
 		event = "VeryLazy",

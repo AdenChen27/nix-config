@@ -7,6 +7,7 @@
     enable = true;
     casks = [
       "codex"
+      "firefox"
       "hammerspoon"
       "iterm2"
       "karabiner-elements"

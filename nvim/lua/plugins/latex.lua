@@ -25,6 +25,7 @@ return {
 				math_super_sub = 1,
 				symbols = 1,
 			}
+			vim.g.vimtex_compiler_latexmk_engines = { _ = "-xelatex" }
 			vim.g.vimtex_compiler_latexmk = {
 				aux_dir = "aux",
 				out_dir = "",
@@ -34,8 +35,6 @@ return {
 				options = {
 					"-verbose",
 					"-file-line-error",
-					"-synctex=1",
-					"-interaction=nonstopmode",
 				},
 			}
 
