@@ -13,11 +13,12 @@ return {
 				"html",
 				"css",
 				"javascript",
+				"latex",
 			},
 			highlight = {
 				enable = true,
 				additional_vim_regex_highlighting = false,
-        disable = { "latex" }
+        disable = { "latex" }  -- parse only; VimTeX owns highlighting
 			},
 			indent = {
 				enable = true,

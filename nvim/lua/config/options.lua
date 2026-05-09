@@ -38,9 +38,11 @@ o.tabstop = 2
 o.expandtab = true
 
 -- Folding
-o.foldmethod = "expr"
-o.foldexpr = "nvim_treesitter#foldexpr()"
+-- ufo recommends very high foldlevel + foldlevelstart so files open with all folds open.
+-- foldmethod/foldexpr are overridden by ufo per-buffer (manual + ufo-managed structure).
 o.foldlevel = 99
+o.foldlevelstart = 99
+o.foldenable = true
 
 -- Persistent Data (swap/undo/backup)
 local cache = vim.fn.stdpath("state")
@@ -73,17 +75,6 @@ cmd("BufWinEnter", {
 		if vim.api.nvim_buf_get_name(0) ~= "" and vim.bo.buftype == "" then
 			vim.cmd("silent! loadview")
 		end
-	end,
-})
-
--- Use VimTeX folding for TeX files (overrides global Treesitter foldexpr)
-cmd("FileType", {
-	group = aug("TexFoldSettings", { clear = true }),
-	pattern = { "tex" },
-	callback = function()
-		vim.opt_local.foldmethod = "expr"
-		vim.opt_local.foldexpr = "vimtex#fold#level(v:lnum)"
-		vim.opt_local.foldtext = "vimtex#fold#text()"
 	end,
 })
 

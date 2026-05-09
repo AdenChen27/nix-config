@@ -9,6 +9,10 @@ highlight def link texEnvItodo VimtexTodo
 " Superscript complement
 syntax match texMathSymbol /\^\s*\\complement\>/ contained conceal cchar=ᶜ
 
+" Colon operators (mathtools single-= variants not in VimTeX table)
+syntax match texMathSymbol /\\coloneq\>/ contained conceal cchar=≔
+syntax match texMathSymbol /\\eqcolon\>/ contained conceal cchar=≕
+
 " Probability / statistics
 syntax match texMathSymbol /\\indep\>/ contained conceal cchar=⫫
 syntax match texMathSymbol /\\ind\>/   contained conceal cchar=𝟙
