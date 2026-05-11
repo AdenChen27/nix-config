@@ -3,7 +3,7 @@ local o = vim.opt
 -- UI
 o.number = true
 o.relativenumber = true
-o.colorcolumn = "80"
+o.colorcolumn = "88"
 o.mouse = "a"
 o.spell = true
 o.termguicolors = true
