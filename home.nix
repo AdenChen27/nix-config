@@ -1,18 +1,26 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   env = import ./env.nix;
-  python = pkgs.python312.withPackages (ps: with ps; [
-    pip
-    numpy
-    pandas
-    scipy
-    jupyterlab
-    matplotlib
-    ipykernel
-    openai
-    statsmodels
-  ]);
-in {
+  python = pkgs.python312.withPackages (
+    ps: with ps; [
+      pip
+      numpy
+      pandas
+      scipy
+      jupyterlab
+      matplotlib
+      ipykernel
+      openai
+      statsmodels
+    ]
+  );
+in
+{
   programs.home-manager.enable = true;
   home.sessionVariables = env;
 
@@ -34,17 +42,25 @@ in {
     fzf
     nerd-fonts.jetbrains-mono
     neovim
+    nixfmt-rfc-style
+    nil
     code-minimap
     texlive.combined.scheme-full
     openssh
     tmux
     stylua
+    statix
+    deadnix
+    shellcheck
+    shfmt
     julia-bin
     ripgrep
     gh
     wget
     imagemagick
-    poppler_utils
+    poppler-utils
+    ocrmypdf
+    tesseract
     ghostscript
     pandoc
     python
@@ -92,11 +108,13 @@ in {
     enable = true;
     config = {
       ProgramArguments = [ "${config.home.homeDirectory}/bin/update-notes.sh" ];
-      StartCalendarInterval = [{
-        Weekday = 5;
-        Hour = 1;
-        Minute = 0;
-      }];
+      StartCalendarInterval = [
+        {
+          Weekday = 5;
+          Hour = 1;
+          Minute = 0;
+        }
+      ];
       StandardOutPath = "${config.home.homeDirectory}/Library/Logs/update-notes.log";
       StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/update-notes.log";
     };

@@ -5,7 +5,7 @@ local i = ls.insert_node
 local f = ls.function_node
 
 return {
-  s({ trig = "sec", snippetType = "autosnippet" }, {
+  s("sec", {
     t("# ---- "),
     i(1, "Section"),
     t(" "),

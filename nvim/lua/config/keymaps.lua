@@ -21,6 +21,9 @@ vim.api.nvim_create_autocmd("FileType", {
 -- <C-l> to correct spelling in insert mode
 vim.keymap.set("i", "<C-l>", "<c-g>u<Esc>[s1z=`]a<c-g>u", { silent = true })
 
+-- <Esc><Esc> to exit terminal mode
+vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+
 
 -- <telescope>
 local builtin = require('telescope.builtin')

@@ -19,4 +19,3 @@ tmux new-window -t $SESSION:5 -n temp "cd ~; exec \$SHELL"
 # Attach to session
 tmux attach -t $SESSION
 tmux select-window -t 5
-

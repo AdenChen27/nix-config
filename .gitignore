@@ -1,1 +1,4 @@
 .DS_Store
+.nvimlog
+result
+nvim/after/syntax/*/

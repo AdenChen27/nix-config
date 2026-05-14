@@ -1,6 +1,7 @@
 # System-level macOS settings (Dock, Finder, keyboard, Homebrew casks).
 # User-level config (packages, dotfiles, shell) lives in home.nix.
-{ ... }: {
+{ ... }:
+{
   system.primaryUser = "aden";
 
   homebrew = {
@@ -45,7 +46,33 @@
     TrackpadRightClick = true;
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
+  nix.gc = {
+    automatic = true;
+    interval = [
+      {
+        Weekday = 7;
+        Hour = 3;
+        Minute = 15;
+      }
+    ];
+    options = "--delete-older-than 30d";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    interval = [
+      {
+        Weekday = 7;
+        Hour = 4;
+        Minute = 15;
+      }
+    ];
+  };
 
   system.configurationRevision = null;
 

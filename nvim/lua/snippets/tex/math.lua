@@ -44,6 +44,7 @@ local auto_symbols = {
 	{ "<=",    "\\Leftarrow",       nil, false },
 	{ ">>",    "\\gg ",             nil, false },
 	{ "<<",    "\\ll ",             nil, false },
+	{ "**",    "\\star ",           nil, false },
 }
 
 local tab_symbols = {

@@ -6,6 +6,7 @@ return {
     ft = { "python", "julia" },
     keys = {
       { "<leader>rr", desc = "Iron: toggle REPL" },
+      { "<leader>cl", desc = "Iron: clear REPL" },
       { "<leader>sc", desc = "Iron: send motion", mode = { "n", "x" } },
       { "<leader>sl", desc = "Iron: send line" },
       { "<leader>sf", desc = "Iron: send file" },

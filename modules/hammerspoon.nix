@@ -13,6 +13,7 @@
     hs.hotkey.bind(hyper, "Z", focus("Zotero"))
     hs.hotkey.bind(hyper, "F", focus("Finder"))
     hs.hotkey.bind(hyper, "P", focus("Sioyek"))
+    hs.hotkey.bind(hyper, "X", focus("Codex"))
 
     local function openDir(path)
       return function() hs.execute('open "' .. path .. '"') end

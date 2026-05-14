@@ -1,0 +1,20 @@
+[project]
+name = "research-python"
+version = "0.1.0"
+description = "Python research project"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "ipykernel",
+  "jupyterlab",
+  "matplotlib",
+  "numpy",
+  "pandas",
+  "scipy",
+  "statsmodels",
+]
+
+[tool.ruff]
+line-length = 88
