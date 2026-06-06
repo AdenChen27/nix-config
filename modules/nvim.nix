@@ -9,6 +9,7 @@ in
   xdg.configFile."nvim/lua/config".source = link "lua/config";
   xdg.configFile."nvim/lua/plugins".source = link "lua/plugins";
   xdg.configFile."nvim/lua/lsp".source = link "lua/lsp";
+  xdg.configFile."nvim/after/plugin".source = link "after/plugin";
   xdg.configFile."nvim/after/syntax".source = link "after/syntax";
   xdg.configFile."nvim/lazy-lock.json".source = link "lazy-lock.json";
 }

@@ -13,6 +13,13 @@ syntax match texMathSymbol /\^\s*\\complement\>/ contained conceal cchar=ᶜ
 syntax match texMathSymbol /\\coloneq\>/ contained conceal cchar=≔
 syntax match texMathSymbol /\\eqcolon\>/ contained conceal cchar=≕
 
+" Greek aliases from adenc.sty
+syntax match texMathSymbol /\\eps\>/  contained conceal cchar=ε
+syntax match texMathSymbol /\\vphi\>/ contained conceal cchar=φ
+
+" Proof symbols
+syntax match texMathSymbol /\\qed\(here\)\?\>/ conceal cchar=□
+
 " Probability / statistics
 syntax match texMathSymbol /\\indep\>/ contained conceal cchar=⫫
 syntax match texMathSymbol /\\ind\>/   contained conceal cchar=𝟙

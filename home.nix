@@ -17,6 +17,7 @@ let
       ipykernel
       openai
       statsmodels
+      markitdown
     ]
   );
 in

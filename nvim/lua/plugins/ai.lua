@@ -3,37 +3,32 @@ return {
 		"zbirenbaum/copilot.lua",
 		lazy = false,
 		config = function()
+			local function in_courses(bufname)
+				local path = string.lower(bufname)
+				local name = string.lower(vim.fs.basename(bufname))
+				return string.find(path, "/courses/", 1, true) and not string.find(name, "notes", 1, true)
+			end
+
 			require("copilot").setup({
 				suggestion = { enabled = true, auto_trigger = true, hide_during_completion = false, keymap = { accept = "<C-j>" } },
 				panel = { enabled = false },
 				filetypes = { ["*"] = true },
-			})
-
-			local function in_courses()
-				local path = vim.fn.expand("%:p")
-				local name = vim.fn.expand("%:t")
-				return string.find(string.lower(path), "/courses/")
-					and not string.find(string.lower(name), "notes")
-			end
-
-			local initialized = {}
-
-			vim.api.nvim_create_autocmd("BufEnter", {
-				pattern = "*",
-				callback = function()
-					local buf = vim.api.nvim_get_current_buf()
-					if in_courses() then
-						-- Only disable on first visit; manual :Copilot enable persists until restart
-						if not initialized[buf] then
-							initialized[buf] = true
-							vim.cmd("Copilot disable")
-						end
-					else
-						initialized[buf] = nil
-						vim.cmd("Copilot enable")
+				should_attach = function(bufnr, bufname)
+					if not vim.bo[bufnr].buflisted then
+						return false
 					end
+
+					if vim.bo[bufnr].buftype ~= "" then
+						return false
+					end
+
+					return not in_courses(bufname)
 				end,
 			})
+
+			vim.api.nvim_create_user_command("CopilotEnable", function()
+				vim.cmd("Copilot! attach")
+			end, {})
 		end,
 	},
 	{

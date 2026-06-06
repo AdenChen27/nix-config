@@ -26,6 +26,7 @@ return {
 				symbols = 1,
 			}
 			vim.g.vimtex_compiler_latexmk_engines = { _ = "-xelatex" }
+			vim.env.TEXMF_OUTPUT_DIRECTORY = "aux"
 			vim.g.vimtex_compiler_latexmk = {
 				aux_dir = "aux",
 				out_dir = "",

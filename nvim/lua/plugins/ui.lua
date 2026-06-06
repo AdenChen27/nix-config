@@ -67,4 +67,15 @@ return {
 			require("render-markdown").setup()
 		end,
 	},
+
+	-- Browser Markdown preview
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
+		ft = { "markdown" },
+		build = "cd app && npm install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+	},
 }
