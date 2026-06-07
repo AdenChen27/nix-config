@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  user,
   ...
 }:
 let
@@ -25,8 +26,8 @@ in
   programs.home-manager.enable = true;
   home.sessionVariables = env;
 
-  home.username = "aden";
-  home.homeDirectory = "/Users/aden";
+  home.username = user.username;
+  home.homeDirectory = user.homeDirectory;
 
   home.stateVersion = "25.05";
 

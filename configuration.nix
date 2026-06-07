@@ -1,8 +1,8 @@
 # System-level macOS settings (Dock, Finder, keyboard, Homebrew casks).
 # User-level config (packages, dotfiles, shell) lives in home.nix.
-{ ... }:
+{ user, ... }:
 {
-  system.primaryUser = "aden";
+  system.primaryUser = user.username;
 
   homebrew = {
     enable = true;

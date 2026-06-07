@@ -3,8 +3,8 @@
 SESSION="course"
 
 # Paths
-BASE="/Users/aden/Library/CloudStorage/Box-Box/Courses"
-LATEX="/Users/aden/Box/latex"
+BASE="$HOME/Library/CloudStorage/Box-Box/Courses"
+LATEX="$HOME/Box/latex"
 
 # Start new detached tmux session with LaTeX window as first
 tmux new-session -d -s $SESSION -n LaTeX "cd '$LATEX'; exec \$SHELL"

@@ -20,9 +20,15 @@
       nixpkgs,
       home-manager,
     }:
+    let
+      user = import ./user.nix;
+    in
     {
       darwinConfigurations."Aden's Brain" = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
+        specialArgs = {
+          inherit user;
+        };
         modules = [
           ./configuration.nix
 
@@ -31,10 +37,13 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit user;
+            };
 
-            users.users.aden.home = "/Users/aden";
+            users.users.${user.username}.home = user.homeDirectory;
 
-            home-manager.users.aden = import ./home.nix;
+            home-manager.users.${user.username} = import ./home.nix;
           }
         ];
       };
