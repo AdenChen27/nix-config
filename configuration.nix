@@ -15,6 +15,7 @@ in
       "codex"
       "firefox"
       "hammerspoon"
+      "jordanbaird-ice"
       "iterm2"
       "karabiner-elements"
       "keepingyouawake"

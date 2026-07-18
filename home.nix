@@ -32,6 +32,7 @@ in
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
+    jless
     coreutils
     nodejs_22
     pyright
