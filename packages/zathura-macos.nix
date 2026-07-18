@@ -13,6 +13,70 @@ let
     "${gtk}/share/gsettings-schemas/${gtk.name}"
     "${zathuraCoreOut}/share"
   ];
+
+  launcherSource = pkgs.writeText "zathura-macos-launcher.m" ''
+    #import <AppKit/AppKit.h>
+
+    @interface ZathuraAppDelegate : NSObject <NSApplicationDelegate>
+    @property(nonatomic) BOOL handledOpenEvent;
+    @end
+
+    @implementation ZathuraAppDelegate
+
+    - (BOOL)launchZathuraWithFiles:(NSArray<NSString *> *)filenames {
+      NSString *executable = [[NSBundle mainBundle]
+        pathForAuxiliaryExecutable:@"zathura-bin"];
+
+      if (executable == nil) {
+        NSLog(@"Unable to find the bundled Zathura executable");
+        return NO;
+      }
+
+      NSTask *task = [[NSTask alloc] init];
+      task.executableURL = [NSURL fileURLWithPath:executable];
+      task.arguments = filenames;
+
+      NSError *error = nil;
+      if (![task launchAndReturnError:&error]) {
+        NSLog(@"Unable to launch Zathura: %@", error);
+        return NO;
+      }
+
+      return YES;
+    }
+
+    - (void)application:(NSApplication *)application
+               openFiles:(NSArray<NSString *> *)filenames {
+      self.handledOpenEvent = YES;
+      BOOL success = [self launchZathuraWithFiles:filenames];
+      [application replyToOpenOrPrint:
+        success ? NSApplicationDelegateReplySuccess
+                : NSApplicationDelegateReplyFailure];
+    }
+
+    - (void)applicationDidFinishLaunching:(NSNotification *)notification {
+      NSApplication *application = notification.object;
+
+      if (!self.handledOpenEvent) {
+        [self launchZathuraWithFiles:@[]];
+      }
+
+      [application terminate:nil];
+    }
+
+    @end
+
+    int main(void) {
+      @autoreleasepool {
+        NSApplication *application = [NSApplication sharedApplication];
+        ZathuraAppDelegate *delegate = [[ZathuraAppDelegate alloc] init];
+        application.delegate = delegate;
+        [application run];
+      }
+
+      return 0;
+    }
+  '';
 in
 pkgs.symlinkJoin {
   name = "zathura-macos-${zathura.version}";
@@ -20,14 +84,18 @@ pkgs.symlinkJoin {
   nativeBuildInputs = [
     pkgs.libicns
     pkgs.makeWrapper
+    pkgs.stdenv.cc
   ];
 
   postBuild = ''
     app="$out/Applications/Zathura.app"
     mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 
-    cp "${zathuraCoreBin}/bin/.zathura-wrapped" "$app/Contents/MacOS/Zathura"
-    chmod +x "$app/Contents/MacOS/Zathura"
+    cp "${zathuraCoreBin}/bin/.zathura-wrapped" "$app/Contents/MacOS/zathura-bin"
+    chmod +x "$app/Contents/MacOS/zathura-bin"
+
+    "$CC" -fobjc-arc -framework AppKit \
+      "${launcherSource}" -o "$app/Contents/MacOS/Zathura"
 
     png2icns "$app/Contents/Resources/Zathura.icns" \
       "${zathuraCoreOut}/share/icons/hicolor/16x16/apps/org.pwmt.zathura.png" \
@@ -96,11 +164,17 @@ pkgs.symlinkJoin {
     </plist>
     EOF
 
+    /usr/bin/codesign --force --deep --sign - "$app"
+
     rm "$out/bin/zathura"
-    makeWrapper "$app/Contents/MacOS/Zathura" "$out/bin/zathura" \
+    makeWrapper "$app/Contents/MacOS/zathura-bin" "$out/bin/zathura" \
       --prefix PATH : "${lib.makeBinPath [ pkgs.file ]}" \
       --set GDK_PIXBUF_MODULE_FILE "${zathuraCore.GDK_PIXBUF_MODULE_FILE}" \
       --prefix XDG_DATA_DIRS : "${xdgDataDirs}" \
-      --prefix ZATHURA_PLUGINS_PATH : "$out/lib/zathura"
+      --prefix ZATHURA_PLUGINS_PATH : "$out/lib/zathura" \
+      --run 'unset DBUS_LAUNCHD_SESSION_BUS_SOCKET DBUS_SESSION_BUS_ADDRESS' \
+      --run 'dbus_service="gui/$(/usr/bin/id -u)/org.nix-community.home.dbus-session"' \
+      --run 'dbus_socket=$(/bin/launchctl print "$dbus_service" 2>/dev/null | /usr/bin/awk "\$1 == \"DBUS_LAUNCHD_SESSION_BUS_SOCKET\" && \$2 == \"=>\" { print \$3; exit }")' \
+      --run 'if [ -n "$dbus_socket" ]; then export DBUS_LAUNCHD_SESSION_BUS_SOCKET="$dbus_socket"; export DBUS_SESSION_BUS_ADDRESS="unix:path=$dbus_socket"; fi'
   '';
 }

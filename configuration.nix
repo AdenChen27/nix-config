@@ -1,6 +1,11 @@
 # System-level macOS settings (Dock, Finder, keyboard, Homebrew casks).
 # User-level config (packages, dotfiles, shell) lives in home.nix.
-{ pkgs, user, ... }:
+{
+  lib,
+  pkgs,
+  user,
+  ...
+}:
 let
   zathura = import ./packages/zathura-macos.nix { inherit pkgs; };
 in
@@ -9,8 +14,16 @@ in
 
   environment.systemPackages = [ zathura ];
 
+  system.activationScripts.applications.text = lib.mkAfter ''
+    if [ -L /Applications/Zathura.app ]; then
+      /bin/rm /Applications/Zathura.app
+    fi
+    /usr/bin/ditto "${zathura}/Applications/Zathura.app" /Applications/Zathura.app
+  '';
+
   homebrew = {
     enable = true;
+    brews = [ "dbus" ];
     casks = [
       "codex"
       "firefox"

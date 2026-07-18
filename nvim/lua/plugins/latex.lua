@@ -3,9 +3,9 @@ return {
 		"lervag/vimtex",
 		init = function()
 			vim.g.tex_flavor = "latex"
-			vim.g.vimtex_view_method = "general"
-			vim.g.vimtex_view_general_viewer = "sioyek"
-			vim.g.vimtex_view_general_options = "--forward-search-file @tex --forward-search-line @line @pdf"
+			vim.g.vimtex_view_method = "zathura_simple"
+			vim.g.vimtex_view_zathura_check_libsynctex = 0
+			vim.g.vimtex_callback_progpath = vim.fn.exepath("nvim")
 			vim.g.vimtex_quickfix_mode = 0
 			vim.g.vimtex_fold_enabled = 0  -- nvim-ufo owns folding
 			vim.g.vimtex_matchparen_enabled = 0
