@@ -79,6 +79,7 @@ in
     ./modules/git.nix
     ./modules/hammerspoon.nix
     ./modules/sioyek.nix
+    ./modules/zathura.nix
     ./modules/karabiner.nix
     ./modules/tex.nix
   ];

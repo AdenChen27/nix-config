@@ -1,8 +1,13 @@
 # System-level macOS settings (Dock, Finder, keyboard, Homebrew casks).
 # User-level config (packages, dotfiles, shell) lives in home.nix.
-{ user, ... }:
+{ pkgs, user, ... }:
+let
+  zathura = import ./packages/zathura-macos.nix { inherit pkgs; };
+in
 {
   system.primaryUser = user.username;
+
+  environment.systemPackages = [ zathura ];
 
   homebrew = {
     enable = true;
@@ -12,6 +17,7 @@
       "hammerspoon"
       "iterm2"
       "karabiner-elements"
+      "keepingyouawake"
       "sioyek"
     ];
     onActivation.cleanup = "zap";
