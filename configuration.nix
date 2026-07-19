@@ -15,8 +15,8 @@ in
   environment.systemPackages = [ zathura ];
 
   system.activationScripts.applications.text = lib.mkAfter ''
-    if [ -L /Applications/Zathura.app ]; then
-      /bin/rm /Applications/Zathura.app
+    if [ -e /Applications/Zathura.app ] || [ -L /Applications/Zathura.app ]; then
+      /bin/rm -rf /Applications/Zathura.app
     fi
     /usr/bin/ditto "${zathura}/Applications/Zathura.app" /Applications/Zathura.app
   '';

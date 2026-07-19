@@ -5,6 +5,7 @@ let
   zathuraCore = pkgs.zathuraPkgs.zathura_core;
   zathuraCoreBin = lib.getBin zathuraCore;
   zathuraCoreOut = lib.getOutput "out" zathuraCore;
+  bundleIdentifier = "org.pwmt.zathura.nix";
   gsettingsSchemas = pkgs.gsettings-desktop-schemas;
   gtk = pkgs.gtk3;
 
@@ -134,7 +135,7 @@ pkgs.symlinkJoin {
       <key>CFBundleIconFile</key>
       <string>Zathura.icns</string>
       <key>CFBundleIdentifier</key>
-      <string>org.pwmt.zathura</string>
+      <string>${bundleIdentifier}</string>
       <key>CFBundleInfoDictionaryVersion</key>
       <string>6.0</string>
       <key>CFBundleName</key>

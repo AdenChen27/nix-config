@@ -9,7 +9,7 @@
   home.activation.setZathuraDefaultPdfViewer = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     $DRY_RUN_CMD /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister \
       -f -R -trusted /Applications/Zathura.app
-    $DRY_RUN_CMD ${pkgs.duti}/bin/duti -s org.pwmt.zathura com.adobe.pdf all
+    $DRY_RUN_CMD ${pkgs.duti}/bin/duti -s org.pwmt.zathura.nix com.adobe.pdf all
   '';
 
   launchd.agents.dbus-session = {
