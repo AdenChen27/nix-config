@@ -78,104 +78,119 @@ let
       return 0;
     }
   '';
-in
-pkgs.symlinkJoin {
-  name = "zathura-macos-${zathura.version}";
-  paths = [ zathura ];
-  nativeBuildInputs = [
-    pkgs.libicns
-    pkgs.makeWrapper
-    pkgs.stdenv.cc
-  ];
 
-  postBuild = ''
-    app="$out/Applications/Zathura.app"
-    mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+  app =
+    pkgs.runCommand "zathura-macos-app-${zathura.version}"
+      {
+        nativeBuildInputs = [
+          pkgs.libicns
+          pkgs.stdenv.cc
+        ];
+      }
+      ''
+        app="$out/Applications/Zathura.app"
+        mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 
-    cp "${zathuraCoreBin}/bin/.zathura-wrapped" "$app/Contents/MacOS/zathura-bin"
-    chmod +x "$app/Contents/MacOS/zathura-bin"
+        cp "${zathuraCoreBin}/bin/.zathura-wrapped" \
+          "$app/Contents/MacOS/.zathura-wrapped"
+        chmod +x "$app/Contents/MacOS/.zathura-wrapped"
 
-    "$CC" -fobjc-arc -framework AppKit \
-      "${launcherSource}" -o "$app/Contents/MacOS/Zathura"
+        cat > "$app/Contents/MacOS/zathura-bin" <<'EOF'
+        #!${pkgs.runtimeShell}
+        export PATH="${lib.makeBinPath [ pkgs.file ]}:''${PATH:-/usr/bin:/bin}"
+        export GDK_PIXBUF_MODULE_FILE="${zathuraCore.GDK_PIXBUF_MODULE_FILE}"
+        export XDG_DATA_DIRS="${xdgDataDirs}''${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
+        export ZATHURA_PLUGINS_PATH="${zathura}/lib/zathura''${ZATHURA_PLUGINS_PATH:+:$ZATHURA_PLUGINS_PATH}"
 
-    png2icns "$app/Contents/Resources/Zathura.icns" \
-      "${zathuraCoreOut}/share/icons/hicolor/16x16/apps/org.pwmt.zathura.png" \
-      "${zathuraCoreOut}/share/icons/hicolor/32x32/apps/org.pwmt.zathura.png" \
-      "${zathuraCoreOut}/share/icons/hicolor/128x128/apps/org.pwmt.zathura.png" \
-      "${zathuraCoreOut}/share/icons/hicolor/256x256/apps/org.pwmt.zathura.png"
+        unset DBUS_LAUNCHD_SESSION_BUS_SOCKET DBUS_SESSION_BUS_ADDRESS
+        dbus_service="gui/$(/usr/bin/id -u)/org.nix-community.home.dbus-session"
+        dbus_socket=$(
+          /bin/launchctl print "$dbus_service" 2>/dev/null |
+            /usr/bin/awk '$1 == "DBUS_LAUNCHD_SESSION_BUS_SOCKET" && $2 == "=>" { print $3; exit }'
+        )
+        if [ -n "$dbus_socket" ]; then
+          export DBUS_LAUNCHD_SESSION_BUS_SOCKET="$dbus_socket"
+          export DBUS_SESSION_BUS_ADDRESS="unix:path=$dbus_socket"
+        fi
 
-    cat > "$app/Contents/Info.plist" <<EOF
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-      <key>CFBundleDisplayName</key>
-      <string>Zathura</string>
-      <key>CFBundleDocumentTypes</key>
-      <array>
+        script_dir="$(cd "$(/usr/bin/dirname "$0")" && /bin/pwd)"
+        exec "$script_dir/.zathura-wrapped" "$@"
+        EOF
+        chmod +x "$app/Contents/MacOS/zathura-bin"
+
+        "$CC" -fobjc-arc -framework AppKit \
+          "${launcherSource}" -o "$app/Contents/MacOS/Zathura"
+
+        png2icns "$app/Contents/Resources/Zathura.icns" \
+          "${zathuraCoreOut}/share/icons/hicolor/16x16/apps/org.pwmt.zathura.png" \
+          "${zathuraCoreOut}/share/icons/hicolor/32x32/apps/org.pwmt.zathura.png" \
+          "${zathuraCoreOut}/share/icons/hicolor/128x128/apps/org.pwmt.zathura.png" \
+          "${zathuraCoreOut}/share/icons/hicolor/256x256/apps/org.pwmt.zathura.png"
+
+        cat > "$app/Contents/Info.plist" <<EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
         <dict>
-          <key>CFBundleTypeExtensions</key>
+          <key>CFBundleDisplayName</key>
+          <string>Zathura</string>
+          <key>CFBundleDocumentTypes</key>
           <array>
-            <string>pdf</string>
+            <dict>
+              <key>CFBundleTypeExtensions</key>
+              <array>
+                <string>pdf</string>
+              </array>
+              <key>CFBundleTypeName</key>
+              <string>PDF document</string>
+              <key>CFBundleTypeRole</key>
+              <string>Viewer</string>
+              <key>LSHandlerRank</key>
+              <string>Alternate</string>
+              <key>LSItemContentTypes</key>
+              <array>
+                <string>com.adobe.pdf</string>
+              </array>
+            </dict>
           </array>
-          <key>CFBundleTypeName</key>
-          <string>PDF document</string>
-          <key>CFBundleTypeRole</key>
-          <string>Viewer</string>
-          <key>LSHandlerRank</key>
-          <string>Alternate</string>
-          <key>LSItemContentTypes</key>
-          <array>
-            <string>com.adobe.pdf</string>
-          </array>
+          <key>CFBundleExecutable</key>
+          <string>Zathura</string>
+          <key>CFBundleIconFile</key>
+          <string>Zathura.icns</string>
+          <key>CFBundleIdentifier</key>
+          <string>${bundleIdentifier}</string>
+          <key>CFBundleInfoDictionaryVersion</key>
+          <string>6.0</string>
+          <key>CFBundleName</key>
+          <string>Zathura</string>
+          <key>CFBundlePackageType</key>
+          <string>APPL</string>
+          <key>CFBundleShortVersionString</key>
+          <string>${zathura.version}</string>
+          <key>CFBundleVersion</key>
+          <string>${zathura.version}</string>
+          <key>LSMinimumSystemVersion</key>
+          <string>10.13</string>
+          <key>NSHighResolutionCapable</key>
+          <true/>
         </dict>
-      </array>
-      <key>CFBundleExecutable</key>
-      <string>Zathura</string>
-      <key>CFBundleIconFile</key>
-      <string>Zathura.icns</string>
-      <key>CFBundleIdentifier</key>
-      <string>${bundleIdentifier}</string>
-      <key>CFBundleInfoDictionaryVersion</key>
-      <string>6.0</string>
-      <key>CFBundleName</key>
-      <string>Zathura</string>
-      <key>CFBundlePackageType</key>
-      <string>APPL</string>
-      <key>CFBundleShortVersionString</key>
-      <string>${zathura.version}</string>
-      <key>CFBundleVersion</key>
-      <string>${zathura.version}</string>
-      <key>LSEnvironment</key>
-      <dict>
-        <key>GDK_PIXBUF_MODULE_FILE</key>
-        <string>${zathuraCore.GDK_PIXBUF_MODULE_FILE}</string>
-        <key>PATH</key>
-        <string>${lib.makeBinPath [ pkgs.file ]}:/usr/bin:/bin</string>
-        <key>XDG_DATA_DIRS</key>
-        <string>${xdgDataDirs}</string>
-        <key>ZATHURA_PLUGINS_PATH</key>
-        <string>$out/lib/zathura</string>
-      </dict>
-      <key>LSMinimumSystemVersion</key>
-      <string>10.13</string>
-      <key>NSHighResolutionCapable</key>
-      <true/>
-    </dict>
-    </plist>
-    EOF
+        </plist>
+        EOF
 
-    /usr/bin/codesign --force --deep --sign - "$app"
+        /usr/bin/codesign --force --deep --sign - "$app"
+      '';
 
-    rm "$out/bin/zathura"
-    makeWrapper "$app/Contents/MacOS/zathura-bin" "$out/bin/zathura" \
-      --prefix PATH : "${lib.makeBinPath [ pkgs.file ]}" \
-      --set GDK_PIXBUF_MODULE_FILE "${zathuraCore.GDK_PIXBUF_MODULE_FILE}" \
-      --prefix XDG_DATA_DIRS : "${xdgDataDirs}" \
-      --prefix ZATHURA_PLUGINS_PATH : "$out/lib/zathura" \
-      --run 'unset DBUS_LAUNCHD_SESSION_BUS_SOCKET DBUS_SESSION_BUS_ADDRESS' \
-      --run 'dbus_service="gui/$(/usr/bin/id -u)/org.nix-community.home.dbus-session"' \
-      --run 'dbus_socket=$(/bin/launchctl print "$dbus_service" 2>/dev/null | /usr/bin/awk "\$1 == \"DBUS_LAUNCHD_SESSION_BUS_SOCKET\" && \$2 == \"=>\" { print \$3; exit }")' \
-      --run 'if [ -n "$dbus_socket" ]; then export DBUS_LAUNCHD_SESSION_BUS_SOCKET="$dbus_socket"; export DBUS_SESSION_BUS_ADDRESS="unix:path=$dbus_socket"; fi'
+  cli = pkgs.writeShellScriptBin "zathura" ''
+    zathura_app="/Applications/Zathura.app/Contents/MacOS/zathura-bin"
+
+    if [[ ! -x "$zathura_app" ]]; then
+      echo "zathura: $zathura_app is not installed" >&2
+      exit 127
+    fi
+
+    exec "$zathura_app" "$@"
   '';
+in
+{
+  inherit app bundleIdentifier cli;
 }

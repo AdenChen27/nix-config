@@ -7,18 +7,19 @@
   ...
 }:
 let
-  zathura = import ./packages/zathura-macos.nix { inherit pkgs; };
+  zathuraMacos = import ./packages/zathura-macos.nix { inherit pkgs; };
 in
 {
   system.primaryUser = user.username;
-
-  environment.systemPackages = [ zathura ];
 
   system.activationScripts.applications.text = lib.mkAfter ''
     if [ -e /Applications/Zathura.app ] || [ -L /Applications/Zathura.app ]; then
       /bin/rm -rf /Applications/Zathura.app
     fi
-    /usr/bin/ditto "${zathura}/Applications/Zathura.app" /Applications/Zathura.app
+    if [ -e "/Applications/Nix Apps/Zathura.app" ] || [ -L "/Applications/Nix Apps/Zathura.app" ]; then
+      /bin/rm -rf "/Applications/Nix Apps/Zathura.app"
+    fi
+    /usr/bin/ditto "${zathuraMacos.app}/Applications/Zathura.app" /Applications/Zathura.app
   '';
 
   homebrew = {
@@ -70,6 +71,13 @@ in
     "nix-command"
     "flakes"
   ];
+
+  # Hiddify's TUN currently breaks TLS over IPv6. Route daemon downloads
+  # through its local mixed proxy so Nix remains usable while the VPN is on.
+  nix.envVars = {
+    http_proxy = "http://127.0.0.1:12334";
+    https_proxy = "http://127.0.0.1:12334";
+  };
 
   nix.gc = {
     automatic = true;

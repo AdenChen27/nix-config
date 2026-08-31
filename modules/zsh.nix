@@ -14,7 +14,7 @@
 
       # ls + vim
       ls = "ls -G --color=auto";
-      ll = "ls -lGh --color=auto --group-directories-first";
+      ll = "${pkgs.coreutils}/bin/ls -lh --color=auto --group-directories-first";
       vim = "nvim";
       vi = "nvim";
       v = "nvim";

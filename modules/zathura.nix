@@ -26,8 +26,10 @@
 
   xdg.configFile."zathura/zathurarc".text = ''
     set font "monospace normal 12"
-    set scroll-step 20
+    set scroll-step 1
 
+    map j feedkeys "100<Down>"
+    map k feedkeys "100<Up>"
     map t toggle_index
     map = zoom in
     map + zoom specific

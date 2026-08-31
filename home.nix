@@ -21,6 +21,7 @@ let
       markitdown
     ]
   );
+  zathuraMacos = import ./packages/zathura-macos.nix { inherit pkgs; };
 in
 {
   programs.home-manager.enable = true;
@@ -68,6 +69,7 @@ in
     pandoc
     python
     uv
+    zathuraMacos.cli
   ];
 
   programs.git.enable = true;
