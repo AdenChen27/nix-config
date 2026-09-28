@@ -29,7 +29,7 @@ in
       "codex"
       "firefox"
       "hammerspoon"
-      "jordanbaird-ice"
+      "jordanbaird-ice@beta"
       "iterm2"
       "karabiner-elements"
       "keepingyouawake"
@@ -71,13 +71,6 @@ in
     "nix-command"
     "flakes"
   ];
-
-  # Hiddify's TUN currently breaks TLS over IPv6. Route daemon downloads
-  # through its local mixed proxy so Nix remains usable while the VPN is on.
-  nix.envVars = {
-    http_proxy = "http://127.0.0.1:12334";
-    https_proxy = "http://127.0.0.1:12334";
-  };
 
   nix.gc = {
     automatic = true;

@@ -85,7 +85,7 @@
     updateZathuraWindowHotkeys()
 
     hs.hotkey.bind(hyper, "T", focus("kitty"))
-    hs.hotkey.bind(hyper, "C", focus("Google Chrome"))
+    hs.hotkey.bind(hyper, "C", focus("Calendar"))
     hs.hotkey.bind(hyper, "Z", focus("Zotero"))
     hs.hotkey.bind(hyper, "F", focus("Finder"))
     hs.hotkey.bind(hyper, "P", focusZathura)
