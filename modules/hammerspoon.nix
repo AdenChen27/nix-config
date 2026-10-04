@@ -9,7 +9,7 @@
       end
     end
 
-    local zathuraBundleID = "org.pwmt.zathura.nix"
+    local zathuraBundleID = "org.pwmt.zathura.nix.viewer"
 
     local function isZathuraWindow(window)
       local app = window:application()
@@ -120,6 +120,21 @@
       if chooser:isVisible() then chooser:hide() else chooser:show() end
     end)
 
-    hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/init.lua", hs.reload):start()
+    -- Home Manager replaces this symlink; watch its directory, not its store target.
+    local configPath = hs.configdir .. "/init.lua"
+    local reloadTimer = hs.timer.delayed.new(0.5, function()
+      -- Wait until the replacement file exists before reloading.
+      if hs.fs.attributes(configPath, "mode") == "file" then
+        hs.reload()
+      end
+    end)
+    configWatcher = hs.pathwatcher.new(hs.configdir, function(paths)
+      for _, path in ipairs(paths) do
+        if path == configPath then
+          reloadTimer:start()
+          return
+        end
+      end
+    end):start()
   '';
 }

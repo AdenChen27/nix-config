@@ -20,6 +20,7 @@ let
 
     @interface ZathuraAppDelegate : NSObject <NSApplicationDelegate>
     @property(nonatomic) BOOL handledOpenEvent;
+    @property(nonatomic) NSUInteger viewerCount;
     @end
 
     @implementation ZathuraAppDelegate
@@ -37,32 +38,54 @@ let
       task.executableURL = [NSURL fileURLWithPath:executable];
       task.arguments = filenames;
 
+      // Keep the file-open handler alive until its last viewer closes.
+      task.terminationHandler = ^(NSTask *finishedTask) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          self.viewerCount--;
+          if (self.viewerCount == 0) {
+            [NSApp terminate:nil];
+          }
+        });
+      };
+
       NSError *error = nil;
       if (![task launchAndReturnError:&error]) {
         NSLog(@"Unable to launch Zathura: %@", error);
         return NO;
       }
 
+      self.viewerCount++;
       return YES;
     }
 
     - (void)application:(NSApplication *)application
                openFiles:(NSArray<NSString *> *)filenames {
       self.handledOpenEvent = YES;
-      BOOL success = [self launchZathuraWithFiles:filenames];
+      BOOL success = YES;
+      for (NSString *filename in filenames) {
+        if (![self launchZathuraWithFiles:@[filename]]) {
+          success = NO;
+        }
+      }
       [application replyToOpenOrPrint:
         success ? NSApplicationDelegateReplySuccess
                 : NSApplicationDelegateReplyFailure];
     }
 
     - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-      NSApplication *application = notification.object;
-
       if (!self.handledOpenEvent) {
         [self launchZathuraWithFiles:@[]];
       }
 
-      [application terminate:nil];
+      if (self.viewerCount == 0) {
+        [NSApp terminate:nil];
+      }
+    }
+
+    - (BOOL)applicationShouldHandleReopen:(NSApplication *)application
+                       hasVisibleWindows:(BOOL)hasVisibleWindows {
+      [self launchZathuraWithFiles:@[]];
+      return NO;
     }
 
     @end
@@ -91,9 +114,12 @@ let
         app="$out/Applications/Zathura.app"
         mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 
+        # Give viewers a distinct identity so Finder always targets the launcher.
+        viewer="$app/Contents/Helpers/Zathura Viewer.app"
+        mkdir -p "$viewer/Contents/MacOS" "$viewer/Contents/Resources"
         cp "${zathuraCoreBin}/bin/.zathura-wrapped" \
-          "$app/Contents/MacOS/.zathura-wrapped"
-        chmod +x "$app/Contents/MacOS/.zathura-wrapped"
+          "$viewer/Contents/MacOS/.zathura-wrapped"
+        chmod +x "$viewer/Contents/MacOS/.zathura-wrapped"
 
         cat > "$app/Contents/MacOS/zathura-bin" <<'EOF'
         #!${pkgs.runtimeShell}
@@ -114,7 +140,7 @@ let
         fi
 
         script_dir="$(cd "$(/usr/bin/dirname "$0")" && /bin/pwd)"
-        exec "$script_dir/.zathura-wrapped" "$@"
+        exec "$script_dir/../Helpers/Zathura Viewer.app/Contents/MacOS/.zathura-wrapped" "$@"
         EOF
         chmod +x "$app/Contents/MacOS/zathura-bin"
 
@@ -169,8 +195,34 @@ let
           <string>${zathura.version}</string>
           <key>CFBundleVersion</key>
           <string>${zathura.version}</string>
+          <key>LSUIElement</key>
+          <true/>
           <key>LSMinimumSystemVersion</key>
           <string>10.13</string>
+          <key>NSHighResolutionCapable</key>
+          <true/>
+        </dict>
+        </plist>
+        EOF
+
+        cp "$app/Contents/Resources/Zathura.icns" "$viewer/Contents/Resources/Zathura.icns"
+        cat > "$viewer/Contents/Info.plist" <<EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>CFBundleExecutable</key>
+          <string>.zathura-wrapped</string>
+          <key>CFBundleIdentifier</key>
+          <string>${bundleIdentifier}.viewer</string>
+          <key>CFBundleName</key>
+          <string>Zathura</string>
+          <key>CFBundleIconFile</key>
+          <string>Zathura.icns</string>
+          <key>CFBundlePackageType</key>
+          <string>APPL</string>
+          <key>CFBundleVersion</key>
+          <string>${zathura.version}</string>
           <key>NSHighResolutionCapable</key>
           <true/>
         </dict>
