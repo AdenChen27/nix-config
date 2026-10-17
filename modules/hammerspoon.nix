@@ -85,7 +85,9 @@
     updateZathuraWindowHotkeys()
 
     hs.hotkey.bind(hyper, "T", focus("kitty"))
-    hs.hotkey.bind(hyper, "C", focus("Calendar"))
+    hs.hotkey.bind(hyper, "C", focus("Claude"))
+    hs.hotkey.bind(hyper, "V", focus("Calendar"))
+    hs.hotkey.bind(hyper, "B", focus("Google Chrome"))
     hs.hotkey.bind(hyper, "Z", focus("Zotero"))
     hs.hotkey.bind(hyper, "F", focus("Finder"))
     hs.hotkey.bind(hyper, "P", focusZathura)
@@ -96,18 +98,18 @@
     end
 
     local chooserActions = {
-      ["ECON21031"]     = openDir(os.getenv("HOME") .. "/Courses/ECON21031"),
-      ["ECON297-Ben"]   = openDir(os.getenv("HOME") .. "/Courses/ECON297-Ben"),
-      ["ECMA30760"]     = openDir(os.getenv("HOME") .. "/Courses/ECMA30760"),
-      ["HIST15413"]     = openDir(os.getenv("HOME") .. "/Courses/HIST15413"),
+      ["MATH245"]       = openDir(os.getenv("HOME") .. "/Courses/MATH245"),
+      ["ECMA30770"]     = openDir(os.getenv("HOME") .. "/Courses/ECMA30770"),
+      ["PHYS131"]       = openDir(os.getenv("HOME") .. "/Courses/PHYS131"),
+      ["BUSN33914"]     = openDir(os.getenv("HOME") .. "/Courses/BUSN33914"),
       ["Reload config"] = hs.reload,
     }
 
     local chooserItems = {
-      { text = "ECON21031",     subText = "~/Courses/ECON21031" },
-      { text = "ECON297-Ben",   subText = "~/Courses/ECON297-Ben" },
-      { text = "ECMA30760",     subText = "~/Courses/ECMA30760" },
-      { text = "HIST15413",     subText = "~/Courses/HIST15413" },
+      { text = "MATH245",       subText = "~/Courses/MATH245" },
+      { text = "ECMA30770",     subText = "~/Courses/ECMA30770" },
+      { text = "PHYS131",       subText = "~/Courses/PHYS131" },
+      { text = "BUSN33914",     subText = "~/Courses/BUSN33914" },
       { text = "Reload config", subText = "Hammerspoon" },
     }
 
