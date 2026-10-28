@@ -10,6 +10,11 @@ vim.list_extend(snippets, sec_pair("sec", "section"))
 vim.list_extend(snippets, sec_pair("subsec", "subsection"))
 vim.list_extend(snippets, sec_pair("subsubsec", "subsubsection"))
 
+-- Beamer frames
+vim.list_extend(snippets, {
+	s({ trig = "frame", condition = not_in_math }, fmt("\\begin{{frame}}{{{}}}\n\\end{{frame}}", { i(1) })),
+})
+
 -- Theorem-like environments
 vim.list_extend(snippets, env_pair("thm", "theorem"))
 vim.list_extend(snippets, env_pair("lem", "lemma"))
